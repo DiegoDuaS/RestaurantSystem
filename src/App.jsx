@@ -1,10 +1,10 @@
-import AreaMesas from './AreaMesas'
+import Restaurante from './MainPage/Restaurante'
 
 function App() {
 
   return (
     <>
-        <AreaMesas></AreaMesas>
+        <Restaurante></Restaurante>
     </>
   )
 }

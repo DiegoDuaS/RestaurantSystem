@@ -1,0 +1,9 @@
+.main-content {
+    margin-top: 120px;
+    flex-direction: row; 
+    background-color: #CFD8DC;
+  }
+
+body {
+  background-color: #CFD8DC;
+}

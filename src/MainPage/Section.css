@@ -24,7 +24,11 @@ li {
     align-items: center; 
     justify-content: center; 
     text-align: center;
-    height: 60px;
+    height: 55px;
+}
+
+li:hover{
+    background-color: #CFD8DC;
 }
 
 .nava {
@@ -40,3 +44,13 @@ a{
     display: table;
     padding: 10px; 
 }
+
+.space{
+    padding-top: 330px;
+}
+
+.signout{
+    border-bottom: 1px solid #B0BEC5;
+}
+
+
