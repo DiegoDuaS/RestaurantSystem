@@ -1,6 +1,6 @@
 .cardmesa{
-    height: 40%;
-    width: 17%;
+    height: 100px;
+    width: 120px;
     border-radius: 15px;
     display: flex; 
     flex-direction: column;
