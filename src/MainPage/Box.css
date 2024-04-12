@@ -18,6 +18,7 @@ section {
     border-radius: 15px;
     display: flex;
     flex-direction: column;
+    overflow: auto
 }
 
 .headerbox {
