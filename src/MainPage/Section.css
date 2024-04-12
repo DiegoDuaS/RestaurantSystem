@@ -27,7 +27,7 @@ li.nav {
     height: 55px;
 }
 
-li:hover{
+li.nav:hover{
     background-color: #CFD8DC;
 }
 
