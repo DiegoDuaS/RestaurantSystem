@@ -1,13 +1,13 @@
 .cardmesa{
-    height: 100px;
-    width: 120px;
+    height: 180px;
+    width: 180px;
     border-radius: 15px;
     display: flex; 
     flex-direction: column;
     justify-content: center; 
     align-items: center; 
-    margin-right: 10px;
-    margin-left: 10px;
+    margin-right: 11px;
+    margin-left: 11px;
     
 }
 

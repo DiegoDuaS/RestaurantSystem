@@ -9,6 +9,7 @@ function Areas(){
             <ul class='box'>
                 <li class ='box'> Area1</li>
                 <li class = 'box'> Area2</li>
+                <li class = 'box'> Area3</li>
             </ul>
         </div>
         </>
