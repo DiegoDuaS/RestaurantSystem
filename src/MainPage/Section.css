@@ -57,4 +57,8 @@ li.signout{
     text-align: center;
 }
 
+.selected{
+    background-color: #CFD8DC;
+}
+
 

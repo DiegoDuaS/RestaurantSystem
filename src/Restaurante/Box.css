@@ -11,8 +11,8 @@ section {
 }
 
 .cardbox{
-    width: 90%;
-    height: 90%;
+    width: 1100px;
+    height: 600px;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     background-color: #ECEFF1;
     border-radius: 15px;
