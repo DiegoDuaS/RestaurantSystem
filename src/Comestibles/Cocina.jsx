@@ -1,6 +1,6 @@
 import '/src/MainPage/Main.css'
 import '/src/MainPage/nav.css'
-import '/src/Restaurante/Box.css'
+import '/src/Mesas/Box.css'
 import './consumibles.css'
 import HeaderMain from '/src/MainPage/Header'
 import NavBar from '/src/MainPage/Nav'
