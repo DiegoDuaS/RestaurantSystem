@@ -1,4 +1,3 @@
-import './Section.css'
 import './Box.css'
 import Areas from './Areas'
 import Mesa from './mesa'

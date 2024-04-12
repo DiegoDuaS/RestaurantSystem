@@ -1,4 +1,4 @@
-import './Section.css'
+import './nav.css'
 import * as FaIcons from "react-icons/fa"
 import React, { useState } from 'react';
 
