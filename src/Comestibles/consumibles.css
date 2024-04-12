@@ -16,10 +16,12 @@
   
   .card h2 {
     margin-top: 0;
+    color: Black;
   }
   
   .card p {
     margin: 10px 0;
+    color: black;
   }
   
   .prepared {
@@ -31,4 +33,5 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 10px;
+    color: #538755;
   }
