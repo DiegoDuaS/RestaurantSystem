@@ -1,9 +1,5 @@
-import '/src/MainPage/Main.css'
-import '/src/MainPage/Section.css'
-import '/src/MainPage/Box.css'
+import '/src/Restaurante/Box.css'
 import './consumibles.css'
-import HeaderMain from '/src/MainPage/Header'
-import NavBar from '/src/MainPage/Nav'
 import Cards from './bebidas'
 
 
@@ -11,17 +7,14 @@ function Bar() {
 
   return (
     <>
-        <main class='main-content'>
-          <HeaderMain></HeaderMain>
-          <NavBar></NavBar>
-          <section>
+        <section>
             <div class='cardbox'>
-              <header class='headerbox'>Pedidos a trabajar</header>
+              <header class='headerbox'>
+                Pedidos a realizar
+              </header>
               <Cards />
             </div>
           </section>
-            
-        </main>
     </>
   )
 }

@@ -11,7 +11,7 @@ function Card({ meal }) {
   return (
     <div className={cardClass}>
         <h2>{meal.name}</h2>
-        <p>Mesa: {meal.table}</p>
+        <p>Pedido: #{meal.table}</p>
         <p>Hora de solicitud: {meal.requestTime}</p>
         <button className="button" onClick={handleButtonClick}>Servido</button>
     </div>
