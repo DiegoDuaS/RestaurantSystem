@@ -21,6 +21,17 @@ section {
     overflow: auto
 }
 
+.cardboxcuenta{
+    width: 1100px;
+    height: 600px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: #ECEFF1;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: row;
+    overflow: auto
+}
+
 .headerbox {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;

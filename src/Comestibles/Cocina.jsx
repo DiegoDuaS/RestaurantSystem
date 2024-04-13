@@ -1,4 +1,4 @@
-import '/src/Restaurante/Box.css'
+import '/src/Mesas/Box.css'
 import './consumibles.css'
 import Cards from './comidas'
 

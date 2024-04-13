@@ -17,6 +17,7 @@
   
   .card h2 {
     margin-top: 0;
+    color: Black;
   }
   
   .card p {
@@ -33,4 +34,5 @@
     border: 1px solid #4c7557;
     border-radius: 8px;
     margin: 3%;
+    padding: 1%;
   }

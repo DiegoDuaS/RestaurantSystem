@@ -1,22 +1,21 @@
 import '/src/Mesas/Box.css'
-import './consumibles.css'
-import Cards from './bebidas'
+import Top from './Filter'
 
 
-function Bar() {
+function Estadisticas() {
 
   return (
     <>
         <section>
             <div class='cardbox'>
               <header class='headerbox'>
-                Pedidos a realizar
+                Estadísticas del negocio
               </header>
-              <Cards />
+              <Top />
             </div>
           </section>
     </>
   )
 }
 
-export default Bar
+export default Estadisticas

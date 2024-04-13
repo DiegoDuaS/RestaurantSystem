@@ -1,4 +1,7 @@
 import Restaurante from './Restaurante/Restaurante'
+import Bar from './Comestibles/Bar'
+import Estadisticas from './Stats/Estadisticas'
+import Cocina from './Comestibles/Cocina'
 import HeaderMain from './MainPage/Header'
 import NavBar from './MainPage/Nav'
 import './MainPage/Main.css'
