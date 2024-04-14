@@ -5,11 +5,12 @@ import Cocina from './Comestibles/Cocina'
 import HeaderMain from './MainPage/Header'
 import NavBar from './MainPage/Nav'
 import './MainPage/Main.css'
+import Login from './LoginPage/Login'
+import Register from './LoginPage/Registe'
 import React, { useState } from 'react';
 
 
-function App() {
-
+function Main(){
   const [selectedOption, setSelectedOption] = useState('restaurante');
 
   return (
@@ -26,6 +27,35 @@ function App() {
        
     </>
   )
+
+}
+
+function Registro({setLogIn}){
+
+const [register, setregister] = useState(false)
+
+return (
+  <>
+   {!register && <Login  setLogIn={setLogIn} setregister={setregister}> </Login>}
+   {register && <Register setLogIn={setLogIn}> </Register>}
+  </>
+)
+
+}
+
+function App() {
+
+  const [logedin, setLogIn] = useState(false)
+
+  return (
+    <>
+      {!logedin && <Registro setLogIn={setLogIn}> </Registro>}
+      {logedin && <Main></Main>}
+       
+    </>
+  )
 }
 
 export default App
+
+

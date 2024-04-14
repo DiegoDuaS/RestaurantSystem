@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import md5 from "md5";
 
-const Login = () => {
+
+const Login = ({setLogIn, setregister}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -23,6 +24,7 @@ const Login = () => {
       setErrorMessage("Nombre de usuario o contraseña incorrectos.");
       return;
     }
+    setLogIn(true)
     console.log("Inicio de sesión exitoso!");
   };
 
@@ -56,7 +58,7 @@ const Login = () => {
           </button>
         </form>
         {errorMessage && <p>{errorMessage}</p>}
-        <p>Todavía no tienes cuenta? Registrar</p>
+        <p onClick={() => setregister(true)}>Todavía no tienes cuenta? Registrar</p>
       </div>
     </div>
   );

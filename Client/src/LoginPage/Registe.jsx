@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import md5 from "md5";
 
-const Register = () => {
+const Register = ({setLogIn}) => {
   const [formData, setFormData] = useState({
     name: "",
     type: "",
@@ -33,6 +33,7 @@ const Register = () => {
         return; 
       }
     }
+    setLogIn(true)
   
     // Encriptar la contraseña usando MD5
     const encryptedPassword = md5(password);
