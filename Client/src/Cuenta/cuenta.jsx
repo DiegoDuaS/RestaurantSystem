@@ -3,9 +3,10 @@ import '/src/MainPage/Main.css'
 import '/src/MainPage/nav.css'
 import '/src/Mesas/Box.css'
 import './cuenta.css'
+import './factura.css'
 import * as IoIcons from "react-icons/io"
 
-function Cuenta({idmesa, setIsSelected}){
+function Cuenta({idmesa, setIsSelected, setIsClosed, setIdCuenta}){
 
     const pruebaComida = [
         {
@@ -22,85 +23,14 @@ function Cuenta({idmesa, setIsSelected}){
         }  
     ]
 
-    const pruebaCuenta = [
-        {
-            'id_pedido': 1,
-            'mesa': 1,
-            'total': 200,
-            'propina': 20,
-            'fecha': '20-2-20',
-            'hora': '15:00',
-            'empleado': 'user',
-            'estado': true
-        },
-        {
-            'id_pedido': 2,
-            'mesa': 1,
-            'total': 200,
-            'propina': 20,
-            'fecha': '20-2-20',
-            'hora': '15:00',
-            'empleado': 'user',
-            'estado': false
-        },
-        {
-            'id_pedido': 3,
-            'mesa': 2,
-            'total': 200,
-            'propina': 20,
-            'fecha': '20-2-20',
-            'hora': '15:00',
-            'empleado': 'user',
-            'estado': true
-        }
-    ]
-
-    const pruebaDatosCuenta = [
-        {
-            'pedido': 1,
-            'bebida': null, 
-            'comida': 1, 
-        },
-        {
-            'pedido': 1,
-            'bebida': null, 
-            'comida': 2, 
-        },
-        {
-            'pedido': 2,
-            'bebida': null, 
-            'comida': 2, 
-        },
-        {
-            'pedido': 2,
-            'bebida': null, 
-            'comida': 1, 
-        },
-        {
-            'pedido': 3,
-            'bebida': null, 
-            'comida': 1, 
-        }
-
-    ]
-
-    function encontrarCuenta(mesaId) {
-        for (const cuenta of pruebaCuenta) {
-          if ((cuenta.mesa).toString() === mesaId) {
-            if (cuenta.estado) {
-              return cuenta.id_pedido;
-            }
-          }
-        }
-        return null;
-      }
-
-    const id = encontrarCuenta(idmesa)
+    const handleClick = (event) => {
+        setIsClosed(true);
+        setIdCuenta('1')
+    };
 
         
     return(
-        <>
-            <div class='cardboxcuenta'>
+        <> 
                 <button className='back' onClick={() => setIsSelected(false)}>
                     <IoIcons.IoMdArrowBack></IoIcons.IoMdArrowBack>
                 </button>
@@ -123,16 +53,98 @@ function Cuenta({idmesa, setIsSelected}){
                         Cuenta de Mesa #{idmesa}
                     </h2>
                     <div className='cuentabox'>
-                        {id}
                     </div>
                     <button className = 'cuenta'> Mandar A Cocina</button>
-                    <button className = 'cuenta'> Cerrar Cuenta</button>
+                    <button className = 'cuenta' onClick = {() => handleClick()}> Cerrar Cuenta</button>
                     <div className='spaced'></div>
                 </div>
-            </div>
         </>
     )
 
 }
 
-export default Cuenta 
+function FacturaPago({idcuenta, setIsSelected}){
+
+    const [selectedOption, setSelectedOption] = useState('');
+
+    const handleOptionChange = (e) => {
+        setSelectedOption(e.target.value);
+    };
+
+    const [valorName, setValorName] = useState('');
+
+    const handleChangeName = (event) => {
+        setValorName(event.target.value);
+    };
+
+    const [valorAddress, setValorAddress] = useState('');
+
+    const handleChangeAdress = (event) => {
+        setValorAddress(event.target.value);
+    };
+
+    const [valorNIT, setValorNIT] = useState('');
+
+    const handleChangeNIT = (event) => {
+        setValorNIT(event.target.value);
+    };
+
+    const [valorPorcentaje, setValorPorcentaje] = useState('');
+
+    const handleChangePorcentaje = (event) => {
+        setValorNIT(event.target.value);
+    };
+
+    
+
+    return(
+        <>
+            <div className='sectionpago'>
+                <h2 className='pago'>Informacion Cliente</h2>
+                <div className='sectiontipopago'>
+                    <input className='infocliente' type="text" id="name" value={valorName} onChange={handleChangeName} placeholder="Nombre" required />
+                    <input className='infocliente' type="text" id="address" value={valorAddress} onChange={handleChangeAdress} placeholder="Direccion" required />
+                    <input className='infocliente' type="number" id="nit" value={valorNIT} onChange={handleChangeNIT} placeholder="NIT" required />
+                    <button className='infocliente'> Aceptar </button>
+                </div>
+                <h2 className='pago'>Pago</h2>
+                <div className='sectiontipopago'>
+                    
+                        <label htmlFor="dropdown">Tipo Pago</label>
+                        <select id="dropdown" value={selectedOption} onChange={handleOptionChange}>
+                            <option value="">Seleccione una opción</option>
+                            <option value="Tarjeta">Tarjeta</option>
+                            <option value="Efectivo">Efectivo</option>
+                        </select>
+                        <input className='infocliente' type="number" id="porcentaje" value={valorPorcentaje} onChange={handleChangePorcentaje} placeholder="Porcentaje" required />
+                        <button className='infocliente'> Pagar </button>
+                        <p> Saldo Restante: </p>
+                    
+                </div>
+            </div>
+
+            <div className='sectionfactura'>
+                <div className='factura'>
+                    
+                </div>
+            </div> 
+        </>
+    )
+}
+
+function TransaccionScreen({idmesa, setIsSelected}){
+
+    const [isClosed, setIsClosed] = useState(false);
+    const [idcuenta, setIdCuenta] = useState('0'); //EN LA BASE DE DATOS EL ID ESTA EN INT
+
+    return(
+        <>
+            <div class='cardboxcuenta'>
+                {!isClosed && <Cuenta idmesa={idmesa} setIsSelected={setIsSelected} setIsClosed={setIsClosed} setIdCuenta={setIdCuenta}></Cuenta>}
+                {isClosed && <FacturaPago idcuenta={idcuenta} setIsSelected={setIsSelected}></FacturaPago>}
+            </div>
+        </>
+    )
+}
+
+export default TransaccionScreen
