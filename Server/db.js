@@ -76,11 +76,33 @@ async function bebida() {
     }
 }
 
+async function cocina() {
+    try {
+        const { rows } = await pool.query('SELECT * FROM comida_cocina');
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
+async function bar() {
+    try {
+        const { rows } = await pool.query('SELECT * FROM bebidas_bar');
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
 module.exports = {
     login,
     register,
     areas,
     mesas,
     comida,
-    bebida
+    bebida,
+    cocina,
+    bar
 };

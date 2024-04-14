@@ -1,5 +1,5 @@
 const db = require('./conn.js');
-const { login, register, areas, mesas, comida, bebida } = require('./db.js');
+const { login, register, areas, mesas, comida, bebida, cocina, bar } = require('./db.js');
 
 const express = require('express');
 const app = express();
@@ -112,6 +112,27 @@ app.get('/bebidas', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+app.get('/cocina', async (req, res) => {
+  try {
+    const result = await cocina();
+    return res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.get('/bar', async (req, res) => {
+  try {
+    const result = await bar();
+    return res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 
 app.listen(PORT, '127.0.0.1', () => {
     console.log(`Server listening at http://127.0.0.1:${PORT}`)
