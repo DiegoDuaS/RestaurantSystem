@@ -1,5 +1,5 @@
 const db = require('./conn.js');
-const { login, register, areas, mesas } = require('./db.js');
+const { login, register, areas, mesas, comida, bebida } = require('./db.js');
 
 const express = require('express');
 const app = express();
@@ -90,6 +90,26 @@ app.post('/mesas', async (req, res) => {
   } catch (err) {
     console.error('Error en /mesas:', err);
     res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+app.get('/comida', async (req, res) => {
+  try {
+    const result = await comida();
+    return res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.get('/bebidas', async (req, res) => {
+  try {
+    const result = await bebida();
+    return res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
   }
 });
 
