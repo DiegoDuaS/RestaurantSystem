@@ -10,15 +10,21 @@ import Cuenta from '../Cuenta/cuenta'
 function Restaurante() {
 
   const [isSelected, setIsSelected] = useState(false);
+  const [mesaIdSelected, setIdMesaSelected] = useState('0');
+
+  const handleSelectMesa = (mesaId) => {
+    setIsSelected(true);
+    setIdMesaSelected(mesaId);
+  };
 
   return (
     <>
-          <section>
-            {isSelected === false && <Mesas isSelected={isSelected} setIsSelected={setIsSelected}/>}
-            {isSelected === true && <Cuenta> </Cuenta>}
-          </section>
+      <section>
+        {!isSelected && <Mesas setIsSelected={setIsSelected} mesaIdSelected={mesaIdSelected} onSelectMesa={handleSelectMesa} />}
+        {isSelected && <Cuenta idmesa={mesaIdSelected} setIsSelected={setIsSelected}/>}
+      </section>
     </>
-  )
+  );
 }
 
 export default Restaurante
