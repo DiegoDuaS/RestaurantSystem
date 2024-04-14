@@ -15,7 +15,7 @@ async function login(id, password_md5) {
 
 async function register(name, trabajo, password, area) {
     try {
-        const query = 'INSERT INTO Empleado (id_empleado, trabajo, nombre, contraseña, area) VALUES (12, $1, $2, $3, $4)';
+        const query = 'INSERT INTO Empleado (id_empleado, trabajo, nombre, contraseña, area) VALUES (null, $1, $2, $3, $4)';
         await pool.query(query, [trabajo, name, password, area]);
 
         const { rows } = await pool.query('SELECT * FROM Empleado WHERE nombre = $1', [name]);
@@ -78,7 +78,7 @@ async function bebida() {
 
 async function cocina() {
     try {
-        const { rows } = await pool.query('SELECT * FROM comida_cocina');
+        const { rows } = await pool.query('SELECT c.nombre as comida, cantidad, pedido, hora, estado FROM comida_cocina k JOIN comida c ON k.comida = c.id_comida');
         return rows;
     } catch (error) {
         console.error('Error en la consulta SQL:', error);
@@ -88,7 +88,7 @@ async function cocina() {
 
 async function bar() {
     try {
-        const { rows } = await pool.query('SELECT * FROM bebidas_bar');
+        const { rows } = await pool.query('SELECT b.nombre as bebida, cantidad, pedido, hora, estado FROM bebidas_bar k JOIN bebida b ON k.bebida = b.id_bebida');
         return rows;
     } catch (error) {
         console.error('Error en la consulta SQL:', error);
