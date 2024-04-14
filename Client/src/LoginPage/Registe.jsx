@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import md5 from "md5";
-import './main.css'
+import './main.css';
 
-
-const Register = ({setLogIn}) => {
+const Register = ({ setLogIn, setRegister }) => {
   const [formData, setFormData] = useState({
     name: "",
     type: "",
-    password: ""
+    password: "",
+    area: ""
   });
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,46 +19,53 @@ const Register = ({setLogIn}) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, type, password } = formData;
-  
-    // Verificar si el nombre de usuario ya está en uso
-    const storedUserData = localStorage.getItem("userData");
-    if (storedUserData) {
-      const existingUser = JSON.parse(storedUserData);
-      if (existingUser.name === name) {
-        setErrorMessage("El nombre de usuario ya está en uso.");
-        setTimeout(() => {
-          setErrorMessage("");
-        }, 2000);
-        return; 
-      }
-    }
-    setLogIn(true)
-  
-    // Encriptar la contraseña usando MD5
-    const encryptedPassword = md5(password);
-  
-    // Guardar los datos del nuevo usuario en el almacenamiento local
-    localStorage.setItem("userData", JSON.stringify({ name, type, password: encryptedPassword }));
-  
-    // Limpiar el formulario después de registrar al usuario
-    setFormData({
-      name: "",
-      type: "",
-      password: ""
-    });
-  
-    setSuccessMessage("¡Registro exitoso!");
-    setTimeout(() => {
-      setSuccessMessage("");
-    }, 2000);
+    const { name, type, password, area } = formData;
 
-    
-    console.log(encryptedPassword)
+    try {
+      // Encriptar la contraseña usando MD5
+      const encryptedPassword = md5(password);
+
+      // Hacer la solicitud al backend para registrar al usuario
+      const response = await fetch('http://127.0.0.1:3002/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          trabajo: type, // Assuming 'type' corresponds to 'trabajo' in backend
+          password: encryptedPassword,
+          area
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccessMessage("¡Registro exitoso!");
+        setTimeout(() => {
+          setSuccessMessage("");
+        }, 2000);
+
+        // Limpiar el formulario después de registrar al usuario
+        setFormData({
+          name: "",
+          type: "",
+          password: "",
+          area: ""
+        });
+
+        setLogIn(true);
+      } else {
+        setErrorMessage(data.error || "Error al registrar usuario.");
+      }
+    } catch (error) {
+      console.error('Error al registrar usuario:', error);
+      setErrorMessage("Error al registrar usuario.");
+    }
   };
-  
 
   return (
     <>
@@ -103,7 +110,7 @@ const Register = ({setLogIn}) => {
           </form>
           {successMessage && <p>{successMessage}</p>}
           {errorMessage && <p>{errorMessage}</p>}
-          <p>¿Ya tienes cuenta? Ingresar</p>
+          <p onClick={() => setRegister(false)}>¿Ya tienes cuenta? Ingresar</p>
         </div>
       </div>
     </>
