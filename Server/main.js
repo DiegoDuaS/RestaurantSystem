@@ -1,5 +1,5 @@
 const db = require('./conn.js');
-const { login, register, areas } = require('./db.js');
+const { login, register, areas, mesas } = require('./db.js');
 
 const express = require('express');
 const app = express();
@@ -7,7 +7,7 @@ const cors = require('cors');
 
 // Middleware para parsear JSON
 app.use(express.json());
-app.use(cors);
+app.use(cors());
 
 const PORT = process.env.PORT || 3002;
 
@@ -43,14 +43,14 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-  const { name, trabajo, password } = req.body;
+  const { name, trabajo, password, area } = req.body;
 
   if (!name || !trabajo || !password) {
       return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
 
   try {
-      const userId = await register(name, trabajo, password);
+      const userId = await register(name, trabajo, password, area);
       if (userId) {
           return res.status(201).json({ userId });
       } else {
@@ -69,6 +69,27 @@ app.get('/areas', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal Server Error');
+  }
+});
+
+app.post('/mesas', async (req, res) => {
+  const { idArea } = req.body; // Suponiendo que usas JSON como entrada
+
+  if (!idArea) {
+    return res.status(400).json({ error: 'Area es requeridos' });
+  }
+
+  try {
+    const mesa = await mesas(idArea);
+    
+    if (mesas) {
+      return res.json(mesa);
+    } else {
+      return res.status(401).json({ error: 'Credenciales inválidas' });
+    }
+  } catch (err) {
+    console.error('Error en /mesas:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
 

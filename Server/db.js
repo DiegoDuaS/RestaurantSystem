@@ -13,10 +13,10 @@ async function login(id, password_md5) {
     }
 }
 
-async function register(name, trabajo, password) {
+async function register(name, trabajo, password, area) {
     try {
-        const query = 'INSERT INTO Empleado (id_empleado, trabajo, nombre, contraseña, area) VALUES (125, $1, $2, $3, 1)';
-        await pool.query(query, [trabajo, name, password]);
+        const query = 'INSERT INTO Empleado (id_empleado, trabajo, nombre, contraseña, area) VALUES (12, $1, $2, $3, $4)';
+        await pool.query(query, [trabajo, name, password, area]);
 
         const { rows } = await pool.query('SELECT * FROM Empleado WHERE nombre = $1', [name]);
         if (rows.length === 1) {
@@ -42,9 +42,23 @@ async function areas() {
     }
 }
 
+async function mesas(area) {
+    try {
+        const { rows } = await pool.query('SELECT * FROM Mesa WHERE area = $1', [area]);
+        if (rows.length > 0) {
+            return rows;
+        }
+
+        return false;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
 
 module.exports = {
     login,
     register,
     areas,
+    mesas,
 };
