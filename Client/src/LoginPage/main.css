@@ -1,0 +1,123 @@
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #263238;
+}
+
+body{
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Centrar horizontalmente */
+}
+
+.app_container{
+  display: flex;
+  margin: 0 auto; /* Centrar la página horizontalmente */
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+
+}
+.register-container{
+  display: flex;
+  flex-direction: column;
+  background-color: #546E7A;
+  padding: 15rem;
+  height: auto;
+  text-align: center;
+  width: 177vh;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.name {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.h1_login {
+  color: #ffffff; /* Color del texto */
+}
+
+.h2_login{
+  color: #676f73  ;
+}
+
+.register-container .title {
+  font-size: 2rem;
+  color: #b1b5bb  ;
+  font-weight: bold;
+  background-color: #546E7A;
+}
+.register-container .sub_titulo {
+  font-size: 0.8rem;
+  padding: 0 0 1.5rem 0;
+  color: #2b5f76;
+  background-color: #546E7A;
+
+}
+
+.register-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #546E7A;
+}
+
+.register-container form .second{
+  display: flex;
+  flex-direction: row;
+  gap: 60px;
+  align-self: center;
+}
+
+.register-container form input {
+  border: none;
+  outline: none;
+  padding: 0.8rem;
+  border-bottom: 1px solid #465d68;
+  background-color: #fafafa;
+  border-radius: 5px;
+}
+
+.register-container form input::placeholder {
+  color: #465d68;
+}
+
+
+.register-container form button {
+  width: 150px;
+  padding: 20px;
+  border: none;
+  background-color: #313d48;
+  font-weight: 400;
+  color: #fafafa;
+  font-size: 1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  align-self: center;
+  }
+
+.register-container form button:hover {
+ animation:5s ease-in linear infinite ; 
+ color: #021925;
+ background-color: #8fadbd;
+}
+
+.register-container p{
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color:#408eb0;
+  background-color: #546E7A;
+
+}
+ 
+
+
+

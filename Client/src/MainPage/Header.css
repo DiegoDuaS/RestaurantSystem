@@ -1,0 +1,40 @@
+.main{
+    background-color: #37474F;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.restitle {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-left: 15px;
+}
+
+.user {
+    font-size: 1rem;
+    font-weight: normal;
+    margin-right: 70px;
+    background-color: #546E7A;
+    height: 40px;
+    width: 120px;
+    border-radius: 15px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center;
+}
+
+.logo {
+    display: flex;
+    justify-content: space-around;
+}
