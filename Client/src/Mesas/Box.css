@@ -1,0 +1,46 @@
+section {
+    position: fixed;
+    width: calc(100vw - 250px);
+    height: calc(100vh - 80px);
+    top: 80px;
+    left: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.cardbox{
+    width: 1100px;
+    height: 600px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: #ECEFF1;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto
+}
+
+.cardboxcuenta{
+    width: 1100px;
+    height: 600px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: #ECEFF1;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: row;
+    overflow: auto
+}
+
+.headerbox {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: #37474F;
+    height: 10%;
+    width: 100%;
+    color: #ffff;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center;
+}

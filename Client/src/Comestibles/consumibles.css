@@ -1,0 +1,38 @@
+.consumible {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 2%;
+  }
+  
+  .card {
+    color:black;
+    border: 1% solid #ccc;
+    border-radius: 2%;
+    padding: 2%;
+    margin: 1%;
+    width: 20vw;
+    background-color: #f9f9f9;
+  }
+  
+  .card h2 {
+    margin-top: 0;
+    color: Black;
+  }
+  
+  .card p {
+    margin: 3% 0;
+    text-align: left;
+  }
+  
+  .prepared {
+    background-color: #58be5d;
+  }
+  
+  .button {
+    background-color: #58be5d;
+    border: 1px solid #4c7557;
+    border-radius: 8px;
+    margin: 3%;
+    padding: 1%;
+  }

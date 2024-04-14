@@ -1,0 +1,68 @@
+.sectionfactura{
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center;
+    height: 100%;
+    width: 550px;
+}
+
+.factura{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 300px;
+    height: 500px;
+    background-color: white;
+}
+
+.sectionpago{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    width: 550px;
+}
+
+h2.pago{
+    color:black;
+    font-weight: normal;
+}
+
+.sectiontipopago{
+    width: 400px;
+    height: 200px;
+    background-color: #B0BEC5;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: auto;
+    justify-content: space-evenly; 
+}
+
+input.infocliente{
+    width: 350px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: white;
+    border-color: #37474F;
+    color: #37474F;
+}
+
+button.infocliente{
+    height: 30px;
+    width: 100px;
+    background-color: #37474F;
+    border-radius: 5px;
+    color: white;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center;
+    font-weight: lighter;
+    font-size: 1em;
+}

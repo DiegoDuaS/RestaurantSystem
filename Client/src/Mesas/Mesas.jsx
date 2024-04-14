@@ -1,7 +1,7 @@
 import './Box.css'
-import Areas from '../Mesas/Areas'
-import Mesa from '../Mesas/mesa'
-import Areasinfo from '../Mesas/areasinfo'
+import Areas from './Areas'
+import Mesa from './mesa'
+import Areasinfo from './areasinfo'
 import React, { useState } from 'react';
 
 function Mesas({ setIsSelected, mesaIdSelected, onSelectMesa }) { 
