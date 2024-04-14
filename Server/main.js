@@ -1,5 +1,5 @@
 const db = require('./conn.js');
-const login = require('./db.js');
+const { login, register } = require('./db.js');
 
 const express = require('express');
 const app = express();
@@ -40,6 +40,25 @@ app.post('/login', async (req, res) => {
   }
 });
 
+app.post('/register', async (req, res) => {
+  const { name, trabajo, password } = req.body;
+
+  if (!name || !trabajo || !password) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+      const userId = await register(name, trabajo, password);
+      if (userId) {
+          return res.status(201).json({ userId });
+      } else {
+          return res.status(400).json({ error: 'No se pudo registrar al usuario' });
+      }
+  } catch (err) {
+      console.error('Error en /register:', err);
+      res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
 
 app.listen(PORT, '127.0.0.1', () => {
     console.log(`Server listening at http://127.0.0.1:${PORT}`)
