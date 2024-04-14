@@ -1,7 +1,8 @@
 .sectionfactura{
     display: flex; 
+    flex-direction: column;
     align-items: center; 
-    justify-content: center; 
+    justify-content: space-evenly; 
     text-align: center;
     height: 100%;
     width: 550px;
@@ -10,10 +11,11 @@
 .factura{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; 
+    justify-content: center; 
     text-align: center;
     width: 300px;
-    height: 500px;
+    height: 450px;
     background-color: white;
 }
 
@@ -51,11 +53,62 @@ input.infocliente{
     background-color: white;
     border-color: #37474F;
     color: #37474F;
+    border: 1px solid black;
 }
 
 button.infocliente{
     height: 30px;
     width: 100px;
+    background-color: #37474F;
+    border-radius: 5px;
+    color: white;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center;
+    font-weight: lighter;
+    font-size: 1em;
+    
+}
+
+.rowtype{
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    justify-content: center; 
+    text-align: center; 
+}
+
+.tipopago{
+    color: black;
+    padding-right: 15px;
+}
+
+select.pago{
+    background-color: white;
+    height: 30px;
+    width: 355px;
+    color:  #37474F;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+p.pago{
+    height: 30px;
+    width: 350px;
+    margin: 0px;
+    color: black;
+}
+
+div.restitlefac{
+    color:black;
+    font-size: 2em;
+    font-weight: bolder;
+}
+
+button.end{
+    height: 50px;
+    width: 200px;
     background-color: #37474F;
     border-radius: 5px;
     color: white;

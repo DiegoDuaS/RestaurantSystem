@@ -5,6 +5,7 @@ import '/src/Mesas/Box.css'
 import './cuenta.css'
 import './factura.css'
 import * as IoIcons from "react-icons/io"
+import * as FaIcons from "react-icons/md"
 
 function Cuenta({idmesa, setIsSelected, setIsClosed, setIdCuenta}){
 
@@ -65,6 +66,10 @@ function Cuenta({idmesa, setIsSelected, setIsClosed, setIdCuenta}){
 
 function FacturaPago({idcuenta, setIsSelected}){
 
+    const[generateFactura, setGenerateFactura] = useState(false)
+
+    let iconStyles = { color: "black", fontSize: "6em" };
+
     const [selectedOption, setSelectedOption] = useState('');
 
     const handleOptionChange = (e) => {
@@ -92,10 +97,8 @@ function FacturaPago({idcuenta, setIsSelected}){
     const [valorPorcentaje, setValorPorcentaje] = useState('');
 
     const handleChangePorcentaje = (event) => {
-        setValorNIT(event.target.value);
+        setValorPorcentaje(event.target.value);
     };
-
-    
 
     return(
         <>
@@ -105,28 +108,30 @@ function FacturaPago({idcuenta, setIsSelected}){
                     <input className='infocliente' type="text" id="name" value={valorName} onChange={handleChangeName} placeholder="Nombre" required />
                     <input className='infocliente' type="text" id="address" value={valorAddress} onChange={handleChangeAdress} placeholder="Direccion" required />
                     <input className='infocliente' type="number" id="nit" value={valorNIT} onChange={handleChangeNIT} placeholder="NIT" required />
-                    <button className='infocliente'> Aceptar </button>
+                    <button className='infocliente' onClick={() => setGenerateFactura(true)}> Aceptar </button>
                 </div>
                 <h2 className='pago'>Pago</h2>
                 <div className='sectiontipopago'>
-                    
-                        <label htmlFor="dropdown">Tipo Pago</label>
-                        <select id="dropdown" value={selectedOption} onChange={handleOptionChange}>
-                            <option value="">Seleccione una opción</option>
+                        <p className='pago'> Saldo Restante: </p>
+                        <select className='pago' id="dropdown" value={selectedOption} onChange={handleOptionChange}>
+                            <option value="">Tipo pago</option>
                             <option value="Tarjeta">Tarjeta</option>
                             <option value="Efectivo">Efectivo</option>
                         </select>
-                        <input className='infocliente' type="number" id="porcentaje" value={valorPorcentaje} onChange={handleChangePorcentaje} placeholder="Porcentaje" required />
+                        <input className='infocliente' type="number" id="porcentaje" value={valorPorcentaje} onChange={handleChangePorcentaje} placeholder="Porcentaje a pagar" required />
                         <button className='infocliente'> Pagar </button>
-                        <p> Saldo Restante: </p>
-                    
                 </div>
             </div>
 
             <div className='sectionfactura'>
                 <div className='factura'>
-                    
+                    {!generateFactura && <div class = 'logofac'>
+                    <FaIcons.MdOutlineFoodBank style={iconStyles}></FaIcons.MdOutlineFoodBank>
+                    <div class = 'restitlefac'> El Fogon Dorado </div>
+                    </div>}
+                    {generateFactura && <> </>}
                 </div>
+                <button className='end' onClick={() => setIsSelected(false)}> Terminar Transaccion</button>
             </div> 
         </>
     )
