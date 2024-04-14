@@ -1,4 +1,4 @@
-section {
+section.main {
     position: fixed;
     width: calc(100vw - 250px);
     height: calc(100vh - 80px);
@@ -8,6 +8,7 @@ section {
     align-items: center;
     justify-content: center;
     text-align: center;
+    background-color: #CFD8DC;
 }
 
 .cardbox{

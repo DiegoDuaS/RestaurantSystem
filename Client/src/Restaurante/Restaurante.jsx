@@ -19,7 +19,7 @@ function Restaurante() {
 
   return (
     <>
-      <section>
+      <section className='main'>
         {!isSelected && <Mesas setIsSelected={setIsSelected} mesaIdSelected={mesaIdSelected} onSelectMesa={handleSelectMesa} />}
         {isSelected && <TransaccionScreen idmesa={mesaIdSelected} setIsSelected={setIsSelected}/>}
       </section>
