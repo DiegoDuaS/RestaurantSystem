@@ -18,13 +18,14 @@ const Login = ({ setLogIn, setRegister }) => {
         },
         body: JSON.stringify({
           id: username, // Cambiado el nombre del campo
-          password: password // Contraseña encriptada con MD5
+          password: md5(password) // Contraseña encriptada con MD5
         })
       });
 
       if (response.ok) {
         const data = await response.json();
         console.log("Inicio de sesión exitoso!");
+        console.log(password);
         setLogIn(true);
       } else if (response.status === 401) {
         setErrorMessage("Nombre de usuario o contraseña incorrectos.");

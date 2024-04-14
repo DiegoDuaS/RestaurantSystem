@@ -1,16 +1,9 @@
-
-*{
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  background-color: #263238;
-}
-
 body{
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   display: flex;
   flex-direction: row;
   align-items: center; /* Centrar horizontalmente */
+  background-color: #263238;
 }
 
 .app_container{

@@ -88,8 +88,8 @@ const Register = ({setLogIn}) => {
             <input
               type="text"
               placeholder="Área"
-              name="type"
-              value={formData.type}
+              name="area"
+              value={formData.area}
               onChange={handleChange}
             />
             <input
