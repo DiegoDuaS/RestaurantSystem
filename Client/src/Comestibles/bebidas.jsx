@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './consumibles.css';
 
 function Card({ meal }) {
@@ -10,9 +10,10 @@ function Card({ meal }) {
 
   return (
     <div className={cardClass}>
-        <h2>{meal.name}</h2>
-        <p>Pedido: #{meal.table}</p>
-        <p>Hora de solicitud: {meal.requestTime}</p>
+        <h2>{meal.bebida}</h2>
+        <p>Cantidad: {meal.cantidad}</p>
+        <p>Pedido: #{meal.pedido}</p>
+        <p>Hora de solicitud: {meal.hora.slice(0, 5)}</p>
         <button className="button" onClick={handleButtonClick}>Servido</button>
     </div>
   );
@@ -20,11 +21,28 @@ function Card({ meal }) {
 }
 
 function comestibles_card() {
-  const mealsData = [ //MODIFICAR OBTENCIÓN DE DATOS
-    { name: "Limonada", table: 5, requestTime: "12:00 PM" },
-    { name: "Horchata", table: 8, requestTime: "12:30 PM" },
-    { name: "Jamaica", table: 3, requestTime: "1:00 PM" },
-  ];
+  const [mealsData, setMealsData] = useState([]);
+
+    useEffect(() => {
+        // Define la URL de tu servidor
+        const url = 'http://127.0.0.1:3002/bar';
+
+        // Realiza la solicitud fetch para obtener datos de comidas
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al obtener datos de comidas');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Actualiza el estado con los datos obtenidos
+                setMealsData(data);
+            })
+            .catch(error => {
+                console.error('Error al realizar fetch:', error);
+            });
+    }, []);
 
   return (
     <div className="consumible">
