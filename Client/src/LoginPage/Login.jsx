@@ -1,31 +1,40 @@
 import React, { useState } from "react";
 import md5 from "md5";
+import './main.css';
 
-
-const Login = ({setLogIn, setregister}) => {
+const Login = ({ setLogIn, setRegister }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Simplemente para este ejemplo, asumimos que estamos recuperando la contraseña encriptada del almacenamiento local.
-    const storedUserData = localStorage.getItem("userData");
-    if (!storedUserData) {
-      setErrorMessage("Usuario no encontrado. Regístrese primero.");
-      return;
-    }
+    try {
+      const response = await fetch('http://127.0.0.1:3002/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id_empleado: username, // Cambiado el nombre del campo
+          password: password // Contraseña encriptada con MD5
+        })
+      });
 
-    const userData = JSON.parse(storedUserData);
-    const { name, email, password: storedPassword } = userData;
-
-    if (username !== name || md5(password) !== storedPassword) {
-      setErrorMessage("Nombre de usuario o contraseña incorrectos.");
-      return;
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Inicio de sesión exitoso!");
+        setLogIn(true);
+      } else if (response.status === 401) {
+        setErrorMessage("Nombre de usuario o contraseña incorrectos.");
+      } else {
+        setErrorMessage("Error interno del servidor.");
+      }
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      setErrorMessage("Error al conectarse al servidor.");
     }
-    setLogIn(true)
-    console.log("Inicio de sesión exitoso!");
   };
 
   return (
@@ -37,15 +46,15 @@ const Login = ({setLogIn, setregister}) => {
       <div className="register-container">
         <span className="title">Ingresar</span>
         <span className="sub_titulo"></span>
-        <form>
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Nombre"
+            placeholder="ID"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <div className="second">
-            <input type="email" placeholder="Tipo Usuario" />
+            <input type="text" placeholder="Tipo Usuario" />
             <input
               type="password"
               placeholder="Contraseña"
@@ -53,12 +62,10 @@ const Login = ({setLogIn, setregister}) => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button type="submit" onClick={handleSubmit}>
-            Acceder
-          </button>
+          <button type="submit">Acceder</button>
         </form>
         {errorMessage && <p>{errorMessage}</p>}
-        <p onClick={() => setregister(true)}>Todavía no tienes cuenta? Registrar</p>
+        <p onClick={() => setRegister(true)}>¿Todavía no tienes cuenta? Registrar</p>
       </div>
     </div>
   );

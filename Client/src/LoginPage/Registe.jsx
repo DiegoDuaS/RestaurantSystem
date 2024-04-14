@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import md5 from "md5";
+import './main.css'
+
 
 const Register = ({setLogIn}) => {
   const [formData, setFormData] = useState({
@@ -79,6 +81,13 @@ const Register = ({setLogIn}) => {
             <input
               type="text"
               placeholder="Tipo Usuario"
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              placeholder="Área"
               name="type"
               value={formData.type}
               onChange={handleChange}
