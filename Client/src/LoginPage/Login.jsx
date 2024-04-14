@@ -17,7 +17,7 @@ const Login = ({ setLogIn, setRegister }) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          id_empleado: username, // Cambiado el nombre del campo
+          id: username, // Cambiado el nombre del campo
           password: password // Contraseña encriptada con MD5
         })
       });
@@ -65,7 +65,7 @@ const Login = ({ setLogIn, setRegister }) => {
           <button type="submit">Acceder</button>
         </form>
         {errorMessage && <p>{errorMessage}</p>}
-        <p onClick={() => setRegister(true)}>¿Todavía no tienes cuenta? Registrar</p>
+        <p onClick={() => setregister(true)}>Todavía no tienes cuenta? Registrar</p>
       </div>
     </div>
   );
