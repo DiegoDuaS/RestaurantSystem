@@ -14,7 +14,7 @@ function App() {
 
   return (
     <>
-      <main class='main-content'>
+      <main className='main-content'>
         <HeaderMain></HeaderMain>
         {selectedOption === 'restaurante' && <Restaurante />}
         {selectedOption === 'cocina' && <Cocina />}
