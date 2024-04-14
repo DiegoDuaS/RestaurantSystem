@@ -1,13 +1,15 @@
 const db = require('./conn.js');
-const { login, register } = require('./db.js');
+const { login, register, areas } = require('./db.js');
 
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 // Middleware para parsear JSON
 app.use(express.json());
+app.use(cors);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 
 app.get('/', async (req, res) => {
     try {
@@ -57,6 +59,16 @@ app.post('/register', async (req, res) => {
   } catch (err) {
       console.error('Error en /register:', err);
       res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+app.get('/areas', async (req, res) => {
+  try {
+    const result = await areas();
+    return res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
   }
 });
 

@@ -30,7 +30,21 @@ async function register(name, trabajo, password) {
     }
 }
 
+async function areas() {
+    try {
+        // Ejecuta la consulta SQL para obtener todos los registros de la tabla 'area'
+        const { rows } = await pool.query('SELECT * FROM area');
+        // Devuelve todos los registros obtenidos
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
+
 module.exports = {
     login,
     register,
+    areas,
 };
