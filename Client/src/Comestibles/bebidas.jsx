@@ -9,13 +9,14 @@ function Card({ meal }) {
   const cardClass = `card ${isPrepared ? 'prepared' : ''}`;
 
   return (
+    !isPrepared && (
     <div className={cardClass}>
         <h2>{meal.bebida}</h2>
         <p>Cantidad: {meal.cantidad}</p>
         <p>Pedido: #{meal.pedido}</p>
         <p>Hora de solicitud: {meal.hora.slice(0, 5)}</p>
         <button className="button" onClick={handleButtonClick}>Servido</button>
-    </div>
+    </div>)
   );
 
 }

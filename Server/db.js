@@ -78,7 +78,7 @@ async function bebida() {
 
 async function cocina() {
     try {
-        const { rows } = await pool.query('SELECT c.nombre as comida, cantidad, pedido, hora, estado FROM comida_cocina k JOIN comida c ON k.comida = c.id_comida');
+        const { rows } = await pool.query('SELECT c.nombre as comida, cantidad, pedido, hora, estado FROM comida_cocina k JOIN comida c ON k.comida = c.id_comida ORDER BY hora');
         return rows;
     } catch (error) {
         console.error('Error en la consulta SQL:', error);
@@ -88,7 +88,7 @@ async function cocina() {
 
 async function bar() {
     try {
-        const { rows } = await pool.query('SELECT b.nombre as bebida, cantidad, pedido, hora, estado FROM bebidas_bar k JOIN bebida b ON k.bebida = b.id_bebida');
+        const { rows } = await pool.query('SELECT b.nombre as bebida, cantidad, pedido, hora, estado FROM bebidas_bar k JOIN bebida b ON k.bebida = b.id_bebida ORDER BY hora');
         return rows;
     } catch (error) {
         console.error('Error en la consulta SQL:', error);
