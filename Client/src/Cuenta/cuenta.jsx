@@ -393,14 +393,13 @@ function FacturaPago({setIsClosed}){
                 </div>
                 <h2 className='pago'>Pago</h2>
                 <div className='sectiontipopago'>
-                        <p className='pago'> Saldo Restante: </p>
                         <select className='pago' id="dropdown" value={selectedOption} onChange={handleOptionChange}>
                             <option value="">Tipo pago</option>
                             <option value="Tarjeta">Tarjeta</option>
                             <option value="Efectivo">Efectivo</option>
                         </select>
                         <input className='infocliente' type="number" id="porcentaje" value={valorPorcentaje} onChange={handleChangePorcentaje} placeholder="Porcentaje a pagar" required />
-                        <button className='infocliente'> Pagar </button>
+                        <button className='infocliente' onClick={() => handlePago()}> Pagar </button>
                 </div>
             </div>
 
