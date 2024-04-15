@@ -224,6 +224,33 @@ async function crear_pedido(id_mesa, propina, empleado, estado) {
     }
   }
 
+  async function comida_recuento(comida, pedido) {
+    try {
+        const query = 'select * from comida_a_recuento($1, $2)';
+        await pool.query(query, [comida, pedido]);
+  
+        const { rows } = await pool.query('SELECT * FROM Recuento WHERE pedido = $1', [pedido]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+  }
+
+  async function bebida_recuento(bebida, pedido) {
+    try {
+        const query = 'select * from bebida_a_recuento($1, $2)';
+        await pool.query(query, [bebida, pedido]);
+  
+        const { rows } = await pool.query('SELECT * FROM Recuento WHERE pedido = $1', [pedido]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+  }
+
+
 module.exports = {
     login,
     register,
@@ -244,5 +271,7 @@ module.exports = {
     quejas_empleados,
     crear_pedido,
     ingresar_pedido,
-    cuenta
+    cuenta,
+    comida_recuento,
+    bebida_recuento
 };
