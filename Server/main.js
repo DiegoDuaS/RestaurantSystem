@@ -3,7 +3,7 @@ const { login, register, areas, mesas, comida, bebida, cocina, bar,
   cocina_update, bar_update, eficiencia_meseros,  quejas_platos,
 imprimir_pedido, horarios_pedidos, platos_mas_pedidos, quejas_empleados,promedio_comidas,
 crear_pedido, ingresar_pedido, cuenta, comida_recuento, bebida_recuento, cuenta_update,
-crear_cliente, nueva_queja, nueva_queja} = require('./db.js');
+crear_cliente, nueva_queja, nueva_encuesta} = require('./db.js');
 
 const express = require('express');
 const app = express();

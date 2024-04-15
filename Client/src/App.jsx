@@ -23,6 +23,7 @@ function Main(){
         {selectedOption === 'cocina' && <Cocina />}
         {selectedOption === 'bar' && <Bar />}
         {selectedOption === 'estadisticas' && <Estadisticas />}
+        {selectedOption === 'login' && <Login />}
         <NavBar selectedOption={selectedOption} setSelectedOption={setSelectedOption}></NavBar>
         
       </main>

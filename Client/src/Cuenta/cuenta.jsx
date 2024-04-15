@@ -15,6 +15,8 @@ function Cuenta({idmesa, setIsClosed}){
     const [comidaData, setcomidaData] = useState(null);
     const [bebidaData, setbebidaData] = useState(null);
     const [pedidoData, setpedidoData] = useState(null);
+    const [errorMessage11, setErrorMessage] = useState("");
+
 
 
     useEffect(() => {
@@ -444,6 +446,58 @@ function EncuestaQuejas({setIsSelected}){
         setSelectedOption(e.target.value);
     };
 
+    const handleSubmit = async (e) => {
+      let empleado = valorEmpleado;
+      let comida = valorComida;
+      let bebida = valorBebida;
+    
+      // Verifica si los valores están vacíos y asígnalos a null
+      if (valorEmpleado === '') {
+        empleado = null;
+      }
+      if (valorComida === '') {
+        comida = null;
+      }
+      if (valorBebida === '') {
+        bebida = null;
+      }
+      e.preventDefault();
+      try {
+        const response = await fetch('http://127.0.0.1:3002/queja', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            cliente: 1, 
+            empleado:empleado, 
+            comida: comida, 
+            bebida: bebida, 
+            motivo: valorQueja, 
+            clasificacion: valorClasification
+          })
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+           // Limpiar los datos después de enviar la queja
+            setValorEmpleado('');
+            setValorComida('');
+            setValorBebida('');
+            setValorQueja('');
+            setValorClasification('');
+            setSelectedOption('');
+        } else if (response.status === 401) {
+          setErrorMessage("Nombre de usuario o contraseña incorrectos.");
+        } else {
+          setErrorMessage("Error interno del servidor.");
+        }
+      } catch (error) {
+        console.error('Error al iniciar sesión:', error);
+        setErrorMessage("Error al conectarse al servidor.");
+      }
+    };
+  
 
     return(
       <>
@@ -502,7 +556,7 @@ function EncuestaQuejas({setIsSelected}){
                <p> Que tan mala fue tu experiencia: </p>
                <input className='infocliente' type="number" id="clasification" value={valorClasification} onChange={handleChangeClasification} placeholder="(1 no tan Mala - 5 Horrible)" required />
                <div className='sectionbuton1'>
-                  <button className='encuestabuton'>Enviar</button>
+                  <button className='encuestabuton' onClick={handleSubmit}>Enviar</button>
               </div>
                </>
               }
