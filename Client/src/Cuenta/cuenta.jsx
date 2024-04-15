@@ -17,10 +17,14 @@ function Cuenta({idmesa, setIsSelected, setIsClosed}){
 
 
     useEffect(() => {
-        handleSubmitComida();
-        handleSubmitBebida();
-        handleSubmitCuenta();
-    }, []);
+      handleSubmitComida();
+      handleSubmitBebida();
+      handleSubmitCuenta();
+  }, [idcuenta]);
+
+  useEffect(() => {
+    limpiarPedidoData();
+  }, []); 
 
     const handleSubmitComida = async () => {
         try {
@@ -75,8 +79,10 @@ function Cuenta({idmesa, setIsSelected, setIsClosed}){
           });
       
           if (response.ok) {
+            limpiarPedidoData();
             const data = await response.json();
             setpedidoData(data);
+            console.log(pedidoData)
           } else if (response.status === 401) {
             setErrorMessage("No se pudo llamar a las mesas");
           } else {
@@ -144,7 +150,9 @@ function Cuenta({idmesa, setIsSelected, setIsClosed}){
 
 
     const handleClick = (event) => {
+        handleSubmitUpdateCuenta();
         setIsClosed('factura');
+        limpiarPedidoData();
     };
 
     const handleClickComida = async (comidaId, pedidoId) => {
@@ -165,29 +173,20 @@ function Cuenta({idmesa, setIsSelected, setIsClosed}){
         }
     };
 
-    const handleSubmitUpdateCuenta = async (bebidaId, pedidoId) => { 
+    const handleSubmitUpdateCuenta = async (cuentaId) => { 
       try {
-          const prueba = JSON.stringify({
-              bebida: bebidaId,
-              pedido: pedidoId
-            })
-  
-            console.log(prueba)
-        
-        const response = await fetch('http://127.0.0.1:3002/recuento/bebida', {
+        const response = await fetch('http://127.0.0.1:3002/cuenta/update', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            bebida: bebidaId,
-            pedido: pedidoId
+            id: idcuenta
           })
         });
         
         if (response.ok) {
-          const data = await response.json();
-          console.log(data);
+          console.log('se cerro la cuenta correctamente');
         } else if (response.status === 401) {
           setErrorMessage("No se pudo llamar a las mesas");
         } else {
@@ -199,7 +198,9 @@ function Cuenta({idmesa, setIsSelected, setIsClosed}){
       }
   };
 
-
+  const limpiarPedidoData = () => {
+    setpedidoData([]);
+  };
         
     return(
         <> 
@@ -235,8 +236,8 @@ function Cuenta({idmesa, setIsSelected, setIsClosed}){
 
 }
 
-function FacturaPago({idcuenta, setIsSelected}){
-
+function FacturaPago({setIsSelected}){
+    const idcuenta = localStorage.getItem('idcuenta');
     const [cuentaData, setcuentaData] = useState(null);
     const [pedidoData, setpedidoData] = useState(null);
 
@@ -286,7 +287,7 @@ function FacturaPago({idcuenta, setIsSelected}){
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              pedido: 1
+              pedido: idcuenta
             })
           });
       
@@ -317,7 +318,7 @@ function FacturaPago({idcuenta, setIsSelected}){
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              idPedido: 1
+              idPedido: idcuenta
             })
           });
       
@@ -334,6 +335,11 @@ function FacturaPago({idcuenta, setIsSelected}){
           setErrorMessage("Error al conectarse al servidor.");
         }
       };
+
+    const handleClick = (event) => {
+        setIsSelected(false);
+        localStorage.setItem('idcuenta', null);
+    };
     
 
     return(
@@ -395,13 +401,12 @@ function EncuestaQuejas({setIsSelected}){
 function TransaccionScreen({idmesa, setIsSelected}){
 
     const [isClosed, setIsClosed] = useState('cuenta');
-    const idcuenta = 1; 
 
     return(
         <>
             <div class='cardboxcuenta'>
                 {isClosed === 'cuenta' && <Cuenta idmesa={idmesa} setIsSelected={setIsSelected} setIsClosed={setIsClosed}></Cuenta>}
-                {isClosed === 'factura' && <FacturaPago idcuenta={idcuenta} setIsSelected={setIsSelected}></FacturaPago>}
+                {isClosed === 'factura' && <FacturaPago setIsSelected={setIsSelected}></FacturaPago>}
             </div>
         </>
     )
