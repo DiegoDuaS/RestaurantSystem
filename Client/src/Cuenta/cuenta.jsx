@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '/src/MainPage/Main.css'
 import '/src/MainPage/nav.css'
 import '/src/Mesas/Box.css'
@@ -9,20 +9,53 @@ import * as FaIcons from "react-icons/md"
 
 function Cuenta({idmesa, setIsSelected, setIsClosed, setIdCuenta}){
 
-    const pruebaComida = [
-        {
-            "id_comida": 1,
-            "nombre": 'Salchichas',
-            "descripcion": 'salchichas inglesas',
-            "precio": 12.23
-        },
-        {
-            "id_comida": 2,
-            "nombre": 'Salchichas2',
-            "descripcion": 'salchichas inglesas2',
-            "precio": 12.23
-        }  
-    ]
+    const [comidaData, setcomidaData] = useState(null);
+    const [bebidaData, setbebidaData] = useState(null);
+
+    useEffect(() => {
+        handleSubmitComida();
+        handleSubmitBebida();
+    }, []);
+
+    const handleSubmitComida = async () => {
+        try {
+          const response = await fetch('http://127.0.0.1:3002/comida', {
+            method: 'GET',
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            setcomidaData(data); 
+          } else if (response.status === 401) {
+            setErrorMessage("No se pudo llamar a la comida");
+          } else {
+            setErrorMessage("Error interno del servidor.");
+          }
+        } catch (error) {
+          console.error('Error al llamar', error);
+          setErrorMessage("Error al conectarse al servidor.");
+        }
+    };
+
+    const handleSubmitBebida = async () => {
+        try {
+          const response = await fetch('http://127.0.0.1:3002/bebidas', {
+            method: 'GET',
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            setbebidaData(data); 
+          } else if (response.status === 401) {
+            setErrorMessage("No se pudo llamar a la comida");
+          } else {
+            setErrorMessage("Error interno del servidor.");
+          }
+        } catch (error) {
+          console.error('Error al llamar', error);
+          setErrorMessage("Error al conectarse al servidor.");
+        }
+    };
 
     const handleClick = (event) => {
         setIsClosed(true);
@@ -38,14 +71,14 @@ function Cuenta({idmesa, setIsSelected, setIsClosed, setIdCuenta}){
                 <div class= 'sectioncomida'>
                     <h3 class = 'tipopedido'>Platillos</h3>
                     <div class = 'platos'>
-                        {pruebaComida.map((plato, index) => (
-                            <p class = 'infromacioncomestible' key={index}>{plato.nombre} - {plato.descripcion} - ${plato.precio}</p>
+                        {comidaData && comidaData.map((plato, index) => (
+                            <p class = 'infromacioncomestible' >{plato.nombre} - {plato.descripcion} - ${plato.precio}</p>
                         ))}
                     </div>
                     <h3 class = 'tipopedido'>Bebidas</h3>
                     <div class = 'platos'>
-                        {pruebaComida.map((plato, index) => (
-                            <p class = 'infromacioncomestible' key={index}>{plato.nombre} - {plato.descripcion} - ${plato.precio}</p>
+                        {bebidaData && bebidaData.map((plato, index) => (
+                            <p class = 'infromacioncomestible' key = {index}>{plato.nombre} - {plato.descripcion} - ${plato.precio}</p>
                         ))}
                     </div>
                 </div>
