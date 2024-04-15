@@ -1,7 +1,7 @@
 const db = require('./conn.js');
 const { login, register, areas, mesas, comida, bebida, cocina, bar,
   cocina_update, bar_update, eficiencia_meseros,  quejas_platos,
-imprimir_pedido} = require('./db.js');
+imprimir_pedido, horarios_pedidos, platos_mas_pedidos, quejas_empleados,promedio_comidas} = require('./db.js');
 
 const express = require('express');
 const app = express();
@@ -193,6 +193,73 @@ app.post('/stats/quejas_platos', async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
+
+app.post('/stats/horarios_pedidos', async (req, res) => {
+  const { fecha_inicial, fecha_final } = req.body;
+
+  if (!fecha_inicial || !fecha_final) {
+    return res.status(400).json({ error: 'Las fechas inicial y final son requeridas' });
+  }
+
+  try {
+    const result = await horarios_pedidos(fecha_inicial, fecha_final);
+    return res.json(result);
+  } catch (err) {
+    console.error('Error en /stats/quejas_platos:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+
+app.post('/stats/platos_mas_pedidos', async (req, res) => {
+  const { fecha_inicial, fecha_final } = req.body;
+
+  if (!fecha_inicial || !fecha_final) {
+    return res.status(400).json({ error: 'Las fechas inicial y final son requeridas' });
+  }
+
+  try {
+    const result = await platos_mas_pedidos(fecha_inicial, fecha_final);
+    return res.json(result);
+  } catch (err) {
+    console.error('Error en /stats/platos_mas_pedidos:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+app.post('/stats/promedio_comidas', async (req, res) => {
+  const { fecha_inicial, fecha_final } = req.body;
+
+  if (!fecha_inicial || !fecha_final) {
+    return res.status(400).json({ error: 'Las fechas inicial y final son requeridas' });
+  }
+
+  try {
+    const result = await promedio_comidas(fecha_inicial, fecha_final);
+    return res.json(result);
+  } catch (err) {
+    console.error('Error en /stats/quejas_platos:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+
+app.post('/stats/quejas_empleados', async (req, res) => {
+  const { fecha_inicial, fecha_final } = req.body;
+
+  if (!fecha_inicial || !fecha_final) {
+    return res.status(400).json({ error: 'Las fechas inicial y final son requeridas' });
+  }
+
+  try {
+    const result = await quejas_empleados(fecha_inicial, fecha_final);
+    return res.json(result);
+  } catch (err) {
+    console.error('Error en /stats/platos_mas_pedidos:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
 
 app.post('/pedidos', async (req, res) => {
   const { idPedido } = req.body;

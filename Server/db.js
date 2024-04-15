@@ -136,6 +136,47 @@ async function quejas_platos(fecha_inicial, fecha_final) {
     }
 }
 
+async function horarios_pedidos(fecha_inicial, fecha_final) {
+    try {
+        const { rows } = await pool.query('SELECT * FROM horarios_pedidos($1, $2)', [fecha_inicial, fecha_final]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
+async function platos_mas_pedidos(fecha_inicial, fecha_final) {
+    try {
+        const { rows } = await pool.query('SELECT * FROM platos_mas_pedidos($1, $2)', [fecha_inicial, fecha_final]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
+async function promedio_comidas(fecha_inicial, fecha_final) {
+    try {
+        const { rows } = await pool.query('SELECT * FROM promedio_comidas($1, $2)', [fecha_inicial, fecha_final]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
+async function quejas_empleados(fecha_inicial, fecha_final) {
+    try {
+        const { rows } = await pool.query('SELECT * FROM quejas_empleados($1, $2)', [fecha_inicial, fecha_final]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
+
 async function imprimir_pedido(id_pedido) {
     try {
         const { rows } = await pool.query('select * from recuento r join pedido p on p.id_pedido = r.pedido  where r.pedido = $1;', [id_pedido]);
@@ -160,5 +201,10 @@ module.exports = {
     bar_update,
     eficiencia_meseros,
     quejas_platos,
-    imprimir_pedido
+    imprimir_pedido,
+    horarios_pedidos,
+    platos_mas_pedidos,
+    promedio_comidas,
+    quejas_empleados
+
 };
