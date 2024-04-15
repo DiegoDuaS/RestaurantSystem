@@ -179,7 +179,7 @@ async function quejas_empleados(fecha_inicial, fecha_final) {
 
 async function imprimir_pedido(id_pedido) {
     try {
-        const { rows } = await pool.query('select * from recuento r join pedido p on p.id_pedido = r.pedido  where r.pedido = $1;', [id_pedido]);
+        const { rows } = await pool.query('select * from recuento where pedido = $1;', [id_pedido]);
         return rows;
     } catch (error) {
         console.error('Error en la consulta SQL:', error);
@@ -213,6 +213,17 @@ async function crear_pedido(id_mesa, propina, empleado, estado) {
     }
   }
 
+  async function cuenta(pedido) {
+    try {
+        const query = 'SELECT c.nombre AS productonombre, c.precio AS precioUnitario, r.cantidad FROM Recuento r LEFT JOIN Comida c ON r.comida = c.id_comida WHERE c.nombre IS NOT NULL AND r.pedido = $1 UNION ALL SELECT b.nombre AS productonombre, b.precio AS precioUnitario, r.cantidad FROM Recuento r LEFT JOIN Bebida b ON r.bebida = b.id_bebida WHERE b.nombre IS NOT NULL AND r.pedido = $1;';
+        const { rows } = await pool.query(query, [pedido]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+  }
+
 module.exports = {
     login,
     register,
@@ -232,5 +243,6 @@ module.exports = {
     promedio_comidas,
     quejas_empleados,
     crear_pedido,
-    ingresar_pedido
+    ingresar_pedido,
+    cuenta
 };

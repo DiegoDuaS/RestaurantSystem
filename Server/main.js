@@ -2,7 +2,7 @@ const db = require('./conn.js');
 const { login, register, areas, mesas, comida, bebida, cocina, bar,
   cocina_update, bar_update, eficiencia_meseros,  quejas_platos,
 imprimir_pedido, horarios_pedidos, platos_mas_pedidos, quejas_empleados,promedio_comidas,
-crear_pedido, ingresar_pedido} = require('./db.js');
+crear_pedido, ingresar_pedido, cuenta} = require('./db.js');
 
 const express = require('express');
 const app = express();
@@ -307,6 +307,26 @@ app.post('/pedidos/ingresar', async (req, res) => {
 
   try {
       const result = await ingresar_pedido(pedido, id_bebida, id_comida, cantidad);
+      if (result) {
+          return res.json(result);
+      } else {
+          return res.status(400).json({ error: 'No se pudo registrar al usuario' });
+      }
+  } catch (err) {
+      console.error('Error en /register:', err);
+      res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+app.post('/cuenta', async (req, res) => {
+  const { pedido } = req.body;
+
+  if (!pedido) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+      const result = await cuenta(pedido);
       if (result) {
           return res.json(result);
       } else {
