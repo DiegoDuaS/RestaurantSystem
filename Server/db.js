@@ -120,6 +120,7 @@ async function bar_update(id) {
     }
 }
 
+// REPORTES
 async function eficiencia_meseros(fecha_inicial, fecha_final) {
     try {
         const { rows } = await pool.query('SELECT * FROM eficiencia_meseros()');
@@ -180,7 +181,7 @@ async function quejas_empleados(fecha_inicial, fecha_final) {
     }
 }
 
-
+// CREACIÓN Y EDICIÓN DE PEDIDOS
 async function imprimir_pedido(id_pedido) {
     try {
         const { rows } = await pool.query('select * from pedido where id_pedido = $1;', [id_pedido]);
@@ -202,9 +203,9 @@ async function crear_pedido(id_mesa, propina, empleado, estado) {
         console.error('Error en la consulta SQL:', error);
         throw error;
     }
-  }
+}
 
-  async function ingresar_pedido(pedido, bebida, comida, cantidad) {
+async function ingresar_pedido(pedido, bebida, comida, cantidad) {
     try {
         const query = 'INSERT INTO Recuento (pedido, bebida, comida, cantidad) VALUES ($1, $2, $3, $4)';
         await pool.query(query, [pedido, bebida, comida, cantidad]);
@@ -215,9 +216,9 @@ async function crear_pedido(id_mesa, propina, empleado, estado) {
         console.error('Error en la consulta SQL:', error);
         throw error;
     }
-  }
+}
 
-  async function cuenta(pedido) {
+async function cuenta(pedido) {
     try {
         const query = 'SELECT c.nombre AS productonombre, c.precio AS precioUnitario, r.cantidad FROM Recuento r LEFT JOIN Comida c ON r.comida = c.id_comida WHERE c.nombre IS NOT NULL AND r.pedido = $1 UNION ALL SELECT b.nombre AS productonombre, b.precio AS precioUnitario, r.cantidad FROM Recuento r LEFT JOIN Bebida b ON r.bebida = b.id_bebida WHERE b.nombre IS NOT NULL AND r.pedido = $1;';
         const { rows } = await pool.query(query, [pedido]);
@@ -226,9 +227,9 @@ async function crear_pedido(id_mesa, propina, empleado, estado) {
         console.error('Error en la consulta SQL:', error);
         throw error;
     }
-  }
+}
 
-  async function comida_recuento(comida, pedido) {
+async function comida_recuento(comida, pedido) {
     try {
         const query = 'select * from comida_a_recuento($1, $2)';
         await pool.query(query, [comida, pedido]);
@@ -239,9 +240,9 @@ async function crear_pedido(id_mesa, propina, empleado, estado) {
         console.error('Error en la consulta SQL:', error);
         throw error;
     }
-  }
+}
 
-  async function bebida_recuento(bebida, pedido) {
+async function bebida_recuento(bebida, pedido) {
     try {
         const query = 'select * from bebida_a_recuento($1, $2)';
         await pool.query(query, [bebida, pedido]);
@@ -252,7 +253,44 @@ async function crear_pedido(id_mesa, propina, empleado, estado) {
         console.error('Error en la consulta SQL:', error);
         throw error;
     }
-  }
+}
+
+// CLIENTE Y COMENTARIOS
+async function crear_cliente(nit, nombre, direccion) {
+    try {
+        const query = 'select * from existe_cliente($1, $2, $3)';
+        const { rows } = await pool.query(query, [nit, nombre, direccion]);
+  
+        return rows
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
+async function nueva_encuesta(cliente, empleado, amabilidad, exactitud) {
+    try {
+        const query = 'INSERT INTO encuesta (cliente, empleado, amabilidad, exactitud) VALUES ($1, $2, $3, $4)';
+        await pool.query(query, [cliente, empleado, amabilidad, exactitud]);
+  
+        return 'Guardado!';
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
+async function nueva_queja(cliente, empleado, comida, bebida, motivo, clasificacion) {
+    try {
+        const query = 'INSERT INTO Queja (cliente, empleado, comida, bebida, motivo, clasificacion) VALUES ($1, $2, $3, $4, $5, $6)';
+        await pool.query(query, [cliente, empleado, comida, bebida, motivo, clasificacion]);
+  
+        return 'Guardado!';
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
 
 
 module.exports = {
@@ -277,5 +315,8 @@ module.exports = {
     ingresar_pedido,
     cuenta,
     comida_recuento,
-    bebida_recuento
+    bebida_recuento,
+    crear_cliente,
+    nueva_encuesta,
+    nueva_queja
 };
