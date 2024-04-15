@@ -1,19 +1,26 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import './Areas.css'
-import ReactDOM from 'react-dom/client'
 
-function Areas(){
-    return(
-        <>
+function Areas({ areasData, AreaSelected, setAreaSelected, handleSubmitMesas }) {
+    const handleClick = (id) => {
+        setAreaSelected(id);
+        handleSubmitMesas();
+    };
+
+    return (
         <div className='areas'>
             <ul className='box'>
-                <li className ='box'> Area1</li>
-                <li className = 'box'> Area2</li>
-                <li className = 'box'> Area3</li>
+                {areasData && areasData.map(area => (
+                    <li
+                        key={area.id_area}
+                        className={AreaSelected === area.id_area ? 'selectedbox' : 'box'}
+                        onClick={() => handleClick(area.id_area)}>
+                        {area.nombre}
+                    </li>
+                ))}
             </ul>
         </div>
-        </>
-    )
+    );
 }
 
 export default Areas
