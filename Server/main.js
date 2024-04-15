@@ -2,7 +2,7 @@ const db = require('./conn.js');
 const { login, register, areas, mesas, comida, bebida, cocina, bar,
   cocina_update, bar_update, eficiencia_meseros,  quejas_platos,
 imprimir_pedido, horarios_pedidos, platos_mas_pedidos, quejas_empleados,promedio_comidas,
-crear_pedido, ingresar_pedido, cuenta} = require('./db.js');
+crear_pedido, ingresar_pedido, cuenta, comida_recuento, bebida_recuento} = require('./db.js');
 
 const express = require('express');
 const app = express();
@@ -338,6 +338,45 @@ app.post('/cuenta', async (req, res) => {
   }
 });
 
+app.post('/recuento/comida', async (req, res) => {
+  const { comida, pedido } = req.body;
+
+  if (!comida || !pedido) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+      const result = await comida_recuento(comida, pedido);
+      if (result) {
+          return res.json(result);
+      } else {
+          return res.status(400).json({ error: 'No se pudo registrar al usuario' });
+      }
+  } catch (err) {
+      console.error('Error en /register:', err);
+      res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+app.post('/recuento/bebida', async (req, res) => {
+  const { bebida, pedido } = req.body;
+
+  if (!bebida || !pedido) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+      const result = await bebida_recuento(bebida, pedido);
+      if (result) {
+          return res.json(result);
+      } else {
+          return res.status(400).json({ error: 'No se pudo registrar al usuario' });
+      }
+  } catch (err) {
+      console.error('Error en /register:', err);
+      res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
 
 app.listen(PORT, '127.0.0.1', () => {
     console.log(`Server listening at http://127.0.0.1:${PORT}`)
