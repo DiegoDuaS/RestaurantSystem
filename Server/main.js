@@ -1,6 +1,7 @@
 const db = require('./conn.js');
 const { login, register, areas, mesas, comida, bebida, cocina, bar,
-  cocina_update, bar_update, eficiencia_meseros,  quejas_platos} = require('./db.js');
+  cocina_update, bar_update, eficiencia_meseros,  quejas_platos,
+imprimir_pedido} = require('./db.js');
 
 const express = require('express');
 const app = express();
@@ -193,6 +194,21 @@ app.post('/stats/quejas_platos', async (req, res) => {
   }
 });
 
+app.post('/pedidos', async (req, res) => {
+  const { idPedido } = req.body;
+
+  if (!idPedido) {
+    return res.status(400).json({ error: 'El id del pedido es requerido' });
+  }
+
+  try {
+    const result = await imprimir_pedido(idPedido);
+    return res.json(result);
+  } catch (err) {
+    console.error('Error en /stats/quejas_platos:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
 
 app.listen(PORT, '127.0.0.1', () => {
     console.log(`Server listening at http://127.0.0.1:${PORT}`)

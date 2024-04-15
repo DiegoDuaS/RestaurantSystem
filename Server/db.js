@@ -136,6 +136,15 @@ async function quejas_platos(fecha_inicial, fecha_final) {
     }
 }
 
+async function imprimir_pedido(id_pedido) {
+    try {
+        const { rows } = await pool.query('select * from recuento r join pedido p on p.id_pedido = r.pedido  where r.pedido = $1;', [id_pedido]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
 
 
 module.exports = {
@@ -150,5 +159,6 @@ module.exports = {
     cocina_update,
     bar_update,
     eficiencia_meseros,
-    quejas_platos
+    quejas_platos,
+    imprimir_pedido
 };
