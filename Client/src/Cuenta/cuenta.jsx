@@ -169,16 +169,16 @@ function FacturaPago({idcuenta, setIsSelected}){
                       </div>
                   )}
                   {generateFactura && (
-                      <>
-                          <div className='sectiontipopago1'>
-                              <p>Nombre: {valorName}</p>
-                              <p>Dirección: {valorAddress}</p>
-                              <p>NIT: {valorNIT}</p>
-                          </div>
-
-                          {/* CADA LO DE PEDIDO  */}
-                      </>
-                  )}
+                        <>
+                            <div className='sectiontipopago1' style={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}>
+                                <p style={{ margin: 0 }}>Nombre: {valorName}</p>
+                                <p style={{ margin: 0 }}>Dirección: {valorAddress}</p>
+                                <p style={{ margin: 0 }}>NIT: {valorNIT}</p>
+                            </div>
+                            {/* Otros campos y detalles de la factura pueden ir aquí */}
+                            <button className='yourButtonClass'>Tu botón aquí</button>
+                        </>
+                    )}
               </div>
               <button className='end' onClick={() => setIsSelected(false)}> Terminar Transacción</button>
           </div>
