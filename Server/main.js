@@ -1,6 +1,6 @@
 const db = require('./conn.js');
 const { login, register, areas, mesas, comida, bebida, cocina, bar,
-  cocina_update, bar_update} = require('./db.js');
+  cocina_update, bar_update, eficiencia_meseros,  quejas_platos} = require('./db.js');
 
 const express = require('express');
 const app = express();
@@ -165,6 +165,34 @@ app.post('/bar/update', async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
+
+app.get('/stats/eficiencia_meseros1', async (req, res) => {
+  try {
+    const result = await eficiencia_meseros(); // Llamada a tu función existente
+    return res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error interno del servidor');
+  }
+});
+
+
+app.post('/stats/quejas_platos', async (req, res) => {
+  const { fecha_inicial, fecha_final } = req.body;
+
+  if (!fecha_inicial || !fecha_final) {
+    return res.status(400).json({ error: 'Las fechas inicial y final son requeridas' });
+  }
+
+  try {
+    const result = await quejas_platos(fecha_inicial, fecha_final);
+    return res.json(result);
+  } catch (err) {
+    console.error('Error en /stats/quejas_platos:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
 
 app.listen(PORT, '127.0.0.1', () => {
     console.log(`Server listening at http://127.0.0.1:${PORT}`)

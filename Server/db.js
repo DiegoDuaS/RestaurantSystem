@@ -116,6 +116,28 @@ async function bar_update(bebida, pedido) {
     }
 }
 
+async function eficiencia_meseros(fecha_inicial, fecha_final) {
+    try {
+        const { rows } = await pool.query('SELECT * FROM eficiencia_meseros()');
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
+async function quejas_platos(fecha_inicial, fecha_final) {
+    try {
+        const { rows } = await pool.query('SELECT * FROM quejas_platos($1, $2)', [fecha_inicial, fecha_final]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
+
+
 module.exports = {
     login,
     register,
@@ -126,5 +148,7 @@ module.exports = {
     cocina,
     bar,
     cocina_update,
-    bar_update
+    bar_update,
+    eficiencia_meseros,
+    quejas_platos
 };
