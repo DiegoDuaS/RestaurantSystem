@@ -11,6 +11,7 @@ function Cuenta({idmesa, setIsSelected, setIsClosed, setIdCuenta}){
 
     const [comidaData, setcomidaData] = useState(null);
     const [bebidaData, setbebidaData] = useState(null);
+    const [localCuenta, setLocalCuenta] = useState({ pedido: 0, comida: null, bebida: null, cantidad: 0 });
 
     useEffect(() => {
         handleSubmitComida();
@@ -65,9 +66,6 @@ function Cuenta({idmesa, setIsSelected, setIsClosed, setIdCuenta}){
         
     return(
         <> 
-                <button className='back' onClick={() => setIsSelected(false)}>
-                    <IoIcons.IoMdArrowBack></IoIcons.IoMdArrowBack>
-                </button>
                 <div class= 'sectioncomida'>
                     <h3 class = 'tipopedido'>Platillos</h3>
                     <div class = 'platos'>
