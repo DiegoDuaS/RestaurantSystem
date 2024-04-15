@@ -11,10 +11,6 @@ import * as FaIcons from "react-icons/md"
 function Cuenta({idmesa, setIsClosed}){
 
     const idcuenta = localStorage.getItem('idcuenta');
-    const idcliente = localStorage.getItem('idcliente');
-    const id_empleado = localStorage.getItem('id');
-
-
 
     const [comidaData, setcomidaData] = useState(null);
     const [bebidaData, setbebidaData] = useState(null);
@@ -27,7 +23,7 @@ function Cuenta({idmesa, setIsClosed}){
       handleSubmitComida();
       handleSubmitBebida();
       handleSubmitCuenta();
-  }, [idcuenta,idcliente,id_empleado]);
+  }, [idcuenta]);
 
   useEffect(() => {
     limpiarPedidoData();
@@ -89,7 +85,6 @@ function Cuenta({idmesa, setIsClosed}){
             limpiarPedidoData();
             const data = await response.json();
             setpedidoData(data);
-            console.log(pedidoData)
           } else if (response.status === 401) {
             setErrorMessage("No se pudo llamar a las mesas");
           } else {
@@ -116,7 +111,6 @@ function Cuenta({idmesa, setIsClosed}){
       
           if (response.ok) {
             const data = await response.json();
-            console.log(data);
           } else if (response.status === 401) {
             setErrorMessage("No se pudo llamar a las mesas");
           } else {
@@ -143,7 +137,6 @@ function Cuenta({idmesa, setIsClosed}){
           
           if (response.ok) {
             const data = await response.json();
-            console.log(data);
           } else if (response.status === 401) {
             setErrorMessage("No se pudo llamar a las mesas");
           } else {
@@ -247,6 +240,7 @@ function FacturaPago({setIsClosed}){
     const [cuentaData, setcuentaData] = useState(null);
     const [pedidoData, setpedidoData] = useState(null);
     const [clienteData, setclienteData] = useState(null);
+    const [totalData, settotalData] = useState(0);
 
     let iconStyles = { color: "black", fontSize: "6em" };
 
@@ -344,14 +338,6 @@ function FacturaPago({setIsClosed}){
       };
 
       const handleSubmitCliente = async (nit1,nombre1,direccion1) => { 
-        const prueba = JSON.stringify({
-          nit: nit1,
-          nombre: nombre1,
-          direccion: direccion1
-        })
-
-        console.log(prueba)
-
         try {
           const response = await fetch('http://127.0.0.1:3002/cliente', {
             method: 'POST',
@@ -370,12 +356,40 @@ function FacturaPago({setIsClosed}){
             setclienteData(data);
             localStorage.setItem('idcliente', data[0].id_cliente);
           } else if (response.status === 401) {
+            setErrorMessage("No se pudo llamar al cliente");
+          } else {
+            setErrorMessage("Error interno del servidor.");
+          }
+        } catch (error) {
+          console.error('Error al llamar al cliente', error);
+          setErrorMessage("Error al conectarse al servidor.");
+        }
+      };
+
+      const handleSubmitFactura = async () => { 
+        try {
+          const response = await fetch('http://127.0.0.1:3002/factura', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              cliente: localStorage.getItem('idcliente'),
+              pedido: localStorage.getItem('idcuenta')
+            })
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            console.log("Se envio correctamente la factura")
+            localStorage.setItem('idcliente', data[0].id_cliente);
+          } else if (response.status === 401) {
             setErrorMessage("No se pudo llamar a las mesas");
           } else {
             setErrorMessage("Error interno del servidor.");
           }
         } catch (error) {
-          console.error('Error al llamar las mesas', error);
+          console.error('Error al llamar la factura', error);
           setErrorMessage("Error al conectarse al servidor.");
         }
       };
@@ -389,7 +403,7 @@ function FacturaPago({setIsClosed}){
                     <input className='infocliente' type="text" id="name" value={valorName} onChange={handleChangeName} placeholder="Nombre" required />
                     <input className='infocliente' type="text" id="address" value={valorAddress} onChange={handleChangeAdress} placeholder="Direccion" required />
                     <input className='infocliente' type="number" id="nit" value={valorNIT} onChange={handleChangeNIT} placeholder="NIT" required />
-                    <button className='infocliente' onClick={() => handleSubmitCliente(parseInt(valorNIT), valorName, valorAddress) && setGenerateFactura(true)}> Aceptar </button>
+                    <button className='infocliente' onClick={() => {handleSubmitCliente(parseInt(valorNIT), valorName, valorAddress)}}>Aceptar</button>
                 </div>
                 <h2 className='pago'>Pago</h2>
                 <div className='sectiontipopago'>
@@ -409,6 +423,7 @@ function FacturaPago({setIsClosed}){
                       <div class='logofac'>
                           <FaIcons.MdOutlineFoodBank style={iconStyles}></FaIcons.MdOutlineFoodBank>
                           <div class='restitlefac'> El Fogon Dorado </div>
+                          <button className='generatefactura' onClick={() => {handleSubmitFactura(); setGenerateFactura(true);}}>Generar Factura</button>
                       </div>
                   )}
                   {generateFactura && (
@@ -505,7 +520,7 @@ function EncuestaQuejas({setIsSelected}){
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            cliente: idcliente, 
+            cliente: 1, 
             empleado:empleado, 
             comida: comida, 
             bebida: bebida, 
@@ -517,7 +532,6 @@ function EncuestaQuejas({setIsSelected}){
         if (response.ok) {
           const data = await response.json();
            // Limpiar los datos después de enviar la queja
-            setValorCliente('');
             setValorEmpleado('');
             setValorComida('');
             setValorBebida('');
@@ -535,44 +549,6 @@ function EncuestaQuejas({setIsSelected}){
       }
     };
   
-
-    const handleSubmit_enceusta = async (e) => {
-      let empleado = valorEmpleado;
-      if (valorEmpleado === '') {
-        empleado = null;
-      }
-      e.preventDefault();
-      try {
-        const response = await fetch('http://127.0.0.1:3002/encuesta', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            cliente: idcliente, 
-            empleado: id_empleado, 
-            amabilidad: valorAmabilidad, //valorEmpleado 
-            exactitud: valorAmabilidad //valorEmpleado
-          })
-        });
-  
-        if (response.ok) {
-          const data = await response.json();
-           // Limpiar los datos después de enviar la queja
-           setValorCliente('');
-           setValorEmpleado('');
-           setValorAmabilidad('');
-           setValorExactitud('');
-        } else if (response.status === 401) {
-          setErrorMessage("Nombre de usuario o contraseña incorrectos.");
-        } else {
-          setErrorMessage("Error interno del servidor.");
-        }
-      } catch (error) {
-        console.error('Error al iniciar sesión:', error);
-        setErrorMessage("Error al conectarse al servidor.");
-      }
-    };
 
     return(
       <>
@@ -594,7 +570,7 @@ function EncuestaQuejas({setIsSelected}){
             <p> Amabilidad </p>
             <input className='infocliente' type="number" id="amabilidad" value={valorAmabilidad} onChange={handleChangeAmabilidad} placeholder="Que tan amable fue su mesero" required />
             <div className='sectionbuton1'>
-              <button className='encuestabuton' onClick={handleSubmit_enceusta}>Enviar</button>
+              <button className='encuestabuton'>Enviar</button>
             </div>
           </div>
           <div className='encuestaqueja'> 
