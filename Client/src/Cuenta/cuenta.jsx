@@ -4,10 +4,11 @@ import '/src/MainPage/nav.css'
 import '/src/Mesas/Box.css'
 import './cuenta.css'
 import './factura.css'
+import './encuestaqueja.css'
 import * as IoIcons from "react-icons/io"
 import * as FaIcons from "react-icons/md"
 
-function Cuenta({idmesa, setIsSelected, setIsClosed}){
+function Cuenta({idmesa, setIsClosed}){
 
     const idcuenta = localStorage.getItem('idcuenta');
 
@@ -235,7 +236,7 @@ function Cuenta({idmesa, setIsSelected, setIsClosed}){
 
 }
 
-function FacturaPago({setIsSelected}){
+function FacturaPago({setIsClosed}){
     const idcuenta = localStorage.getItem('idcuenta');
     const [cuentaData, setcuentaData] = useState(null);
     const [pedidoData, setpedidoData] = useState(null);
@@ -386,7 +387,7 @@ function FacturaPago({setIsSelected}){
                         </>
                     )}
               </div>
-              <button className='end' onClick={() => setIsSelected(false)}> Terminar Transacción</button>
+              <button className='end' onClick={() => setIsClosed('encuesta')}> Terminar Transacción</button>
           </div>
 
         </>
@@ -395,6 +396,127 @@ function FacturaPago({setIsSelected}){
 
 function EncuestaQuejas({setIsSelected}){
 
+    const [valorExactitud, setValorExactitud] = useState('');
+
+    const handleChangeExactiud = (event) => {
+        setValorExactitud(event.target.value);
+    };
+
+    const [valorAmabilidad, setValorAmabilidad] = useState('');
+
+    const handleChangeAmabilidad = (event) => {
+        setValorAmabilidad(event.target.value);
+    };
+
+    const [valorEmpleado, setValorEmpleado] = useState('');
+
+    const handleChangeEmpleado = (event) => {
+        setValorEmpleado(event.target.value);
+    };
+
+    const [valorBebida, setValorBebida] = useState('');
+
+    const handleChangeBebida = (event) => {
+        setValorBebida(event.target.value);
+    };
+
+    const [valorComida, setValorComida] = useState('');
+
+    const handleChangeComida = (event) => {
+        setValorComida(event.target.value);
+    };
+
+    const [valorQueja, setValorQueja] = useState('');
+
+    const handleChangeQueja = (event) => {
+        setValorQueja(event.target.value);
+    };
+
+    const [valorClasification, setValorClasification] = useState('');
+
+    const handleChangeClasification = (event) => {
+        setValorClasification(event.target.value);
+    };
+
+    const [selectedOption, setSelectedOption] = useState('');
+
+    const handleOptionChange = (e) => {
+        setSelectedOption(e.target.value);
+    };
+
+
+    return(
+      <>
+      <header class='headerboxencuesta'>
+        <h3 className='hcuenta'>
+          Gracias por su compra
+        </h3>
+        <p class='pcuenta'>
+          ¡Porfavor dejanos tu opinion para poder mejorar!
+        </p>
+      </header>
+      <div className='sectionencuesta'>
+        <div className='sectionencuestaqueja'>
+          <div className='encuestaqueja'> 
+            <h2 className='encuesta2'>Encuesta</h2>
+            <h3 className='encuesta3'> Deja tu opinion de tu mesero del 1 al 5 <br /> (1 malo y 5 exelente) </h3>
+            <p> Exactitud </p>
+            <input className='infocliente' type="number" id="exactitud" value={valorExactitud} onChange={handleChangeExactiud} placeholder="Que tan exacto fue su pedido" required />
+            <p> Amabilidad </p>
+            <input className='infocliente' type="number" id="amabilidad" value={valorAmabilidad} onChange={handleChangeAmabilidad} placeholder="Que tan amable fue su mesero" required />
+            <div className='sectionbuton1'>
+              <button className='encuestabuton'>Enviar</button>
+            </div>
+          </div>
+          <div className='encuestaqueja'> 
+            <h2 className='encuesta2'>Queja</h2>
+            <h3 className='encuesta3'> ¿Problemas con el staff o la comida?</h3>
+              <select className='pago' id="dropdown" value={selectedOption} onChange={handleOptionChange}>
+                <option value="">Queja a:</option>
+                <option value="empleado">Staff</option>
+                <option value="comida">Comida</option>
+                <option value="bebida">Bebida</option>
+              </select>
+              {selectedOption === 'empleado' &&
+               <>
+               <p> Id Empleado </p>
+               <input className='infocliente' type="number" id="empleado" value={valorEmpleado} onChange={handleChangeEmpleado} placeholder="Pide el Id del empleado" required />
+               </>
+              }
+              {selectedOption === 'comida' &&
+               <>
+               <p> Id Comida </p>
+               <input className='infocliente' type="number" id="comida" value={valorComida} onChange={handleChangeComida} placeholder="Puedes encontrar el Id en el menú" required />
+               </>
+              }
+              {selectedOption === 'bebida' &&
+               <>
+               <p> Id Bebida </p>
+               <input className='infocliente' type="number" id="bebida" value={valorBebida} onChange={handleChangeBebida} placeholder="Puedes encontrar el Id en el menú" required />
+               </>
+              }
+              {selectedOption !== '' &&
+              <>
+               <p> Explicanos porque </p>
+               <input className='infoqueja' type="text" id="queja" value={valorQueja} onChange={handleChangeQueja} required />
+               <p> Que tan mala fue tu experiencia: </p>
+               <input className='infocliente' type="number" id="clasification" value={valorClasification} onChange={handleChangeClasification} placeholder="(1 no tan Mala - 5 Horrible)" required />
+               <div className='sectionbuton1'>
+                  <button className='encuestabuton'>Enviar</button>
+              </div>
+               </>
+              }
+          </div>
+        </div>
+        <div className='sectionbuton'>
+          <button className='encuestabuton' onClick={() => setIsSelected(false)}>Salir</button>
+        </div>
+      </div>
+
+
+        
+      </>
+    )
 }
 
 function TransaccionScreen({idmesa, setIsSelected}){
@@ -403,9 +525,10 @@ function TransaccionScreen({idmesa, setIsSelected}){
 
     return(
         <>
-            <div class='cardboxcuenta'>
-                {isClosed === 'cuenta' && <Cuenta idmesa={idmesa} setIsSelected={setIsSelected} setIsClosed={setIsClosed}></Cuenta>}
-                {isClosed === 'factura' && <FacturaPago setIsSelected={setIsSelected}></FacturaPago>}
+            <div className={isClosed === 'encuesta' ? 'cardbox' : 'cardboxcuenta'}>
+                {isClosed === 'cuenta' && <Cuenta idmesa={idmesa} setIsClosed={setIsClosed}></Cuenta>}
+                {isClosed === 'factura' && <FacturaPago setIsClosed={setIsClosed}></FacturaPago>}
+                {isClosed === 'encuesta' && <EncuestaQuejas setIsSelected={setIsSelected}></EncuestaQuejas>}
             </div>
         </>
     )
