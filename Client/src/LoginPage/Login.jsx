@@ -18,7 +18,7 @@ const Login = ({ setLogIn, setRegister }) => {
         },
         body: JSON.stringify({
           id: username, // Cambiado el nombre del campo
-          password: password// Contraseña encriptada con MD5
+          password: md5(password)// Contraseña encriptada con MD5
         })
       });
 

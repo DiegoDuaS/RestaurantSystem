@@ -10,7 +10,7 @@ import TransaccionScreen from '../Cuenta/cuenta'
 function Restaurante() {
 
   const [isSelected, setIsSelected] = useState(false);
-  const [mesaIdSelected, setIdMesaSelected] = useState('0');
+  const [mesaIdSelected, setIdMesaSelected] = useState(1);
 
   const handleSelectMesa = (mesaId) => {
     setIsSelected(true);
