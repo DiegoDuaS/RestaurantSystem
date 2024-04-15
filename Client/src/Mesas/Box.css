@@ -45,3 +45,7 @@ section.main {
     justify-content: center; 
     text-align: center;
 }
+
+.stats_add{
+    color: black;
+}
