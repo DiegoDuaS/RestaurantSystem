@@ -2,7 +2,8 @@ const db = require('./conn.js');
 const { login, register, areas, mesas, comida, bebida, cocina, bar,
   cocina_update, bar_update, eficiencia_meseros,  quejas_platos,
 imprimir_pedido, horarios_pedidos, platos_mas_pedidos, quejas_empleados,promedio_comidas,
-crear_pedido, ingresar_pedido, cuenta, comida_recuento, bebida_recuento, cuenta_update} = require('./db.js');
+crear_pedido, ingresar_pedido, cuenta, comida_recuento, bebida_recuento, cuenta_update,
+crear_cliente, nueva_queja, nueva_queja} = require('./db.js');
 
 const express = require('express');
 const app = express();
@@ -383,6 +384,67 @@ app.post('/cuenta/update', async (req, res) => {
     return res.json(result);
   } catch (err) {
     console.error('Error en /cuenta/update:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+// CLIENTE Y COMENTARIOS
+app.post('/cliente', async (req, res) => {
+  const { nit, nombre, direccion } = req.body;
+
+  if (!nit || !nombre || !direccion) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+      const result = await crear_cliente(nit, nombre, direccion);
+      if (result) {
+          return res.json(result);
+      } else {
+          return res.status(400).json({ error: 'No se pudo registrar al cliente' });
+      }
+  } catch (err) {
+      console.error('Error en /cliente:', err);
+      res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+app.post('/encuesta', async (req, res) => {
+  const { cliente, empleado, amabilidad, exactitud } = req.body;
+
+  if (!cliente || !empleado || !amabilidad || !exactitud) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+      const result = await nueva_encuesta(cliente, empleado, amabilidad, exactitud);
+      if (result) {
+          return res.json(result);
+      } else {
+          return res.status(400).json({ error: 'No se pudo registrar la encuesta' });
+      }
+  } catch (err) {
+      console.error('Error en /cliente:', err);
+      res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+app.post('/queja', async (req, res) => {
+  const { cliente, empleado, comida, bebida, motivo, clasificacion } = req.body;
+
+  if (!cliente || !motivo || !clasificacion) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+      const result = await nueva_queja(cliente, empleado, comida, bebida, motivo, clasificacion);
+      if (result) {
+          return res.json(result);
+      } else {
+          return res.status(400).json({ error: 'No se pudo registrar la queja' });
+      } }
+  catch (err) {
+    console.error('Error en /cliente:', err);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
