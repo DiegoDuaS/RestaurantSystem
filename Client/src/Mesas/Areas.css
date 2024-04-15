@@ -22,6 +22,11 @@ li.box{
     color:black;
 }
 
+li.selectedbox{
+    color:black;
+    border-bottom: 1px solid #000000;
+}
+
 .areasinfo{
     height: 50px;
     width: 100%;

@@ -49,3 +49,23 @@ section.main {
 .stats_add{
     color: black;
 }
+
+.box_stats1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Asegura que ocupe toda la altura disponible */
+}
+.box_stats{
+    display: flex;
+    flex-direction: column;
+    background-color: #546E7A;
+    padding: 3rem;
+    height: auto;
+    text-align: center;
+    width: 50%;
+    height: 300px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
