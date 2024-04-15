@@ -12,6 +12,7 @@ function Cuenta({idmesa, setIsClosed}){
 
     const idcuenta = localStorage.getItem('idcuenta');
 
+
     const [comidaData, setcomidaData] = useState(null);
     const [bebidaData, setbebidaData] = useState(null);
     const [pedidoData, setpedidoData] = useState(null);
@@ -382,7 +383,7 @@ function FacturaPago({setIsClosed}){
           if (response.ok) {
             const data = await response.json();
             console.log("Se envio correctamente la factura")
-            localStorage.setItem('idcliente', data[0].id_cliente);
+            localStorage.setItem('idfactura', data[0].id_factura);
           } else if (response.status === 401) {
             setErrorMessage("No se pudo llamar a las mesas");
           } else {
@@ -497,6 +498,9 @@ function EncuestaQuejas({setIsSelected}){
         setSelectedOption(e.target.value);
     };
 
+    const idcliente = localStorage.getItem('idcliente');
+    const id_empleado = localStorage.getItem('id');
+
     const handleSubmit = async (e) => {
       let empleado = valorEmpleado;
       let comida = valorComida;
@@ -520,7 +524,7 @@ function EncuestaQuejas({setIsSelected}){
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            cliente: 1, 
+            cliente: idcliente, 
             empleado:empleado, 
             comida: comida, 
             bebida: bebida, 
@@ -532,12 +536,15 @@ function EncuestaQuejas({setIsSelected}){
         if (response.ok) {
           const data = await response.json();
            // Limpiar los datos después de enviar la queja
+            setValorIdcliente('');
             setValorEmpleado('');
             setValorComida('');
             setValorBebida('');
             setValorQueja('');
             setValorClasification('');
             setSelectedOption('');
+            console.log('Se logro la queja')
+
         } else if (response.status === 401) {
           setErrorMessage("Nombre de usuario o contraseña incorrectos.");
         } else {
@@ -548,6 +555,43 @@ function EncuestaQuejas({setIsSelected}){
         setErrorMessage("Error al conectarse al servidor.");
       }
     };
+
+    const handleSubmit_enceusta = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await fetch('http://127.0.0.1:3002/encuesta', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            cliente: idcliente, 
+            empleado: id_empleado, 
+            amabilidad: valorAmabilidad, //valorEmpleado 
+            exactitud: valorExactitud, //valorEmpleado
+          })
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+           // Limpiar los datos después de enviar la queja
+           setValorIdcliente('');
+           setValorEmpleado('');
+           setValorAmabilidad('');
+           setValorExactitud('');
+           setSelectedOption('');
+           console.log('Se logro la encuesta')
+        } else if (response.status === 401) {
+          setErrorMessage("Nombre de usuario o contraseña incorrectos.");
+        } else {
+          setErrorMessage("Error interno del servidor.");
+        }
+      } catch (error) {
+        console.error('Error al iniciar sesión:', error);
+        setErrorMessage("Error al conectarse al servidor.");
+      }
+    };
+
   
 
     return(
@@ -570,7 +614,7 @@ function EncuestaQuejas({setIsSelected}){
             <p> Amabilidad </p>
             <input className='infocliente' type="number" id="amabilidad" value={valorAmabilidad} onChange={handleChangeAmabilidad} placeholder="Que tan amable fue su mesero" required />
             <div className='sectionbuton1'>
-              <button className='encuestabuton'>Enviar</button>
+            <button className='encuestabuton' onClick={handleSubmit_enceusta}>Enviar</button>
             </div>
           </div>
           <div className='encuestaqueja'> 
