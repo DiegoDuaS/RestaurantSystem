@@ -1,20 +1,19 @@
-import '/src/Mesas/Box.css'
+import '../Mesas/Box.css'
 import './consumibles.css'
 import Cards from './comidas'
 
 
 function Cocina() {
-
   return (
     <>
-        <section>
+     <section className='main'>
             <div class='cardbox'>
               <header class='headerbox'>
                 Pedidos a realizar
               </header>
               <Cards />
             </div>
-          </section>
+            </section>
     </>
   )
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import '/src/Mesas/Box.css'
+import '../Mesas/Box.css'
 import Top from './Filter'
 import Platos from './platos'
 import Horario from './horarios'
@@ -17,11 +17,12 @@ function Estadisticas() {
 
   return (
     <>
-        <section>
+        <section className='main'>
             <div className='cardbox'>
               <header className='headerbox'>
                 Estadísticas del negocio
               </header>
+              <div className='stats_add'>
               <Top 
               selectedOption={selectedOption} setSelectedOption={setSelectedOption} 
               startDate={startDate} setStartDate={setStartDate}
@@ -32,6 +33,7 @@ function Estadisticas() {
               {selectedOption === 'quejasPersona' && <QuejasPersona />}
               {selectedOption === 'quejasPlatos' && <QuejasPlatos />}
               {selectedOption === 'eficiencia' && <Eficiencia />}
+              </div>
             </div>
           </section>
     </>
