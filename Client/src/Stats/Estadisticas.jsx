@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import '../Mesas/Box.css';
 import Top from './Filter';
-import Platos from './platos';
-import Horario from './horarios';
-import QuejasPersona from './quejasPersona';
-import QuejasPlatos from './quejasPlatos';
-import Promedio from './promedio';
-import Eficiencia from './eficiencia';
 
 function Estadisticas() {
   // Estados para manejar las selecciones del menú desplegable y los receptores de fechas
@@ -145,6 +139,46 @@ function Estadisticas() {
 
   };
 
+  function formatData(responseData) {
+    return responseData.map((data) => {
+        // Inicializa una lista de cadenas vacía para cada objeto
+        let formattedData = [];
+
+        // Recorre todas las claves en el objeto `data`
+        for (let key in data) {
+            if (data[key] === null) {
+              continue; // Si el valor es `null`, salta a la siguiente clave
+            }
+            if (key === 'hora') {
+              // Si la clave es 'hora', formatea el valor según su estructura
+              const horaData = data[key];
+              
+              // Puedes ajustar el formato de hora según tus necesidades
+              if (horaData && horaData.hours !== undefined) {
+                  formattedData.push(`${key}: ${horaData.hours}`);
+              } else {
+                  // Manejo por si 'hora' no contiene el campo esperado
+                  formattedData.push(`${key}: datos de hora no disponibles`);
+              }
+          } else if (key === 'promedio') {
+            // Si la clave es 'promedio', formatea el valor según su estructura
+            const promedioData = data[key];
+            if (promedioData && promedioData.hours !== undefined && promedioData.minutes !== undefined) {
+                formattedData.push(`promedio: ${promedioData.hours} horas y ${promedioData.minutes} minutos`);
+            } else {
+                formattedData.push('promedio: datos de promedio no disponibles');
+            }
+          } else {
+              // Construye la cadena en el formato clave: valor para otras claves
+              formattedData.push(`${key}: ${data[key]}`);
+          }
+        }
+
+        // Une las cadenas con una coma y un espacio, luego añade un salto de línea al final
+        return formattedData.join(', ') + '\n';
+    }).join('');
+}
+
   return (
     <>
       <section className='main'>
@@ -162,15 +196,15 @@ function Estadisticas() {
               setEndDate={setEndDate}
             />
             <button onClick={handleCreate}>Crear</button>
-            {selectedOption === 'eficiencia' && <Eficiencia />}
-            {selectedOption === 'platos' && <Platos />}
-            {selectedOption === 'horario' && <Horario />}
-            {selectedOption === 'promedio' && <Promedio />}
-            {selectedOption === 'quejasPersona' && <QuejasPersona />}
-            {selectedOption === 'quejasPlatos' && <QuejasPlatos />}
+            {selectedOption === 'eficiencia' && <h2>Reporte de eficiencia de meseros</h2>}
+            {selectedOption === 'platos' && <h2>Platos más pedidos</h2>}
+            {selectedOption === 'horario' && <h2>Horarios con más pedidos</h2>}
+            {selectedOption === 'promedio' && <h2>Promedio de tiempo que se tardan los clientes en comer</h2>}
+            {selectedOption === 'quejasPersona' && <h2>Reporte de quejas agrupadas por persona</h2>}
+            {selectedOption === 'quejasPlatos' && <h2>Reporte de quejas agrupadas por plato</h2>}
             {responseData && (
               <div>
-                <pre>{JSON.stringify(responseData, null, 2)}</pre>
+                <pre>{formatData(responseData)}</pre>
               </div>
             )}
             {errorMessage && <p>{errorMessage}</p>}
