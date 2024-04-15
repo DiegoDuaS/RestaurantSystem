@@ -292,6 +292,17 @@ async function nueva_queja(cliente, empleado, comida, bebida, motivo, clasificac
     }
 }
 
+async function cuenta_update(id) {
+    try {
+        const { rows } = await pool.query('UPDATE pedido SET estado = false WHERE id_pedido =  $1', [id]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
+
 
 module.exports = {
     login,
@@ -318,5 +329,6 @@ module.exports = {
     bebida_recuento,
     crear_cliente,
     nueva_encuesta,
-    nueva_queja
+    nueva_queja,
+    cuenta_update
 };

@@ -2,6 +2,7 @@ import "./mesa.css";
 import React, { useState } from 'react';
 
 function Mesa({ num, available, setIsSelected, mesaIdSelected, setIdMesaSelected }) {
+
     const handleCuenta = async () => {
         const userId = localStorage.getItem('id');
         try {
@@ -17,10 +18,11 @@ function Mesa({ num, available, setIsSelected, mesaIdSelected, setIdMesaSelected
                     estado: true // Puedes ajustar el estado según sea necesario
                 })
             });
-
             if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('idcuenta', data[0].id_pedido);
                 console.log("Cuenta creada exitosamente");
-                // Puedes realizar acciones adicionales aquí si es necesario
+                
             } else {
                 console.error("Error al crear la cuenta:", response.statusText);
             }
