@@ -242,6 +242,7 @@ function FacturaPago({setIsClosed}){
     const idcuenta = localStorage.getItem('idcuenta');
     const [cuentaData, setcuentaData] = useState(null);
     const [pedidoData, setpedidoData] = useState(null);
+    const [clienteData, setclienteData] = useState(null);
 
     let iconStyles = { color: "black", fontSize: "6em" };
 
@@ -338,10 +339,42 @@ function FacturaPago({setIsClosed}){
         }
       };
 
-    const handleClick = (event) => {
-        setIsSelected(false);
-        localStorage.setItem('idcuenta', null);
-    };
+      const handleSubmitCliente = async (nit1,nombre1,direccion1) => { 
+        const prueba = JSON.stringify({
+          nit: nit1,
+          nombre: nombre1,
+          direccion: direccion1
+        })
+
+        console.log(prueba)
+
+        try {
+          const response = await fetch('http://127.0.0.1:3002/cliente', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              nit: nit1,
+              nombre: nombre1,
+              direccion: direccion1
+            })
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            setclienteData(data);
+            localStorage.setItem('idcliente', data[0].id_cliente);
+          } else if (response.status === 401) {
+            setErrorMessage("No se pudo llamar a las mesas");
+          } else {
+            setErrorMessage("Error interno del servidor.");
+          }
+        } catch (error) {
+          console.error('Error al llamar las mesas', error);
+          setErrorMessage("Error al conectarse al servidor.");
+        }
+      };
     
 
     return(
@@ -352,7 +385,7 @@ function FacturaPago({setIsClosed}){
                     <input className='infocliente' type="text" id="name" value={valorName} onChange={handleChangeName} placeholder="Nombre" required />
                     <input className='infocliente' type="text" id="address" value={valorAddress} onChange={handleChangeAdress} placeholder="Direccion" required />
                     <input className='infocliente' type="number" id="nit" value={valorNIT} onChange={handleChangeNIT} placeholder="NIT" required />
-                    <button className='infocliente' onClick={do_factura}> Aceptar </button>
+                    <button className='infocliente' onClick={() => do_factura && handleSubmitCliente(parseInt(valorNIT), valorName, valorAddress)}> Aceptar </button>
                 </div>
                 <h2 className='pago'>Pago</h2>
                 <div className='sectiontipopago'>
