@@ -7,17 +7,15 @@ import './factura.css'
 import * as IoIcons from "react-icons/io"
 import * as FaIcons from "react-icons/md"
 
-function Cuenta({idmesa, setIsSelected, setIsClosed}){
+function Cuenta({idmesa, setIsSelected, setIsClosed, setIdCuenta}){
 
     const [comidaData, setcomidaData] = useState(null);
     const [bebidaData, setbebidaData] = useState(null);
-    const [pedidoData, setpedidoData] = useState(null);
-    const pedidoid = localStorage.getItem('pedidoid');
+    const [localCuenta, setLocalCuenta] = useState({ pedido: 0, comida: null, bebida: null, cantidad: 0 });
 
     useEffect(() => {
         handleSubmitComida();
         handleSubmitBebida();
-        handleSubmitPedido();
     }, []);
 
     const handleSubmitComida = async () => {
@@ -60,34 +58,9 @@ function Cuenta({idmesa, setIsSelected, setIsClosed}){
         }
     };
 
-    const handleSubmitPedido = async () => {
-        try {
-          const response = await fetch('http://127.0.0.1:3002/pedidos', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                idPedido: pedidoid
-              })
-          });
-    
-          if (response.ok) {
-            const data = await response.json();
-            setbebidaData(data); 
-          } else if (response.status === 401) {
-            setErrorMessage("No se pudo llamar a la comida");
-          } else {
-            setErrorMessage("Error interno del servidor.");
-          }
-        } catch (error) {
-          console.error('Error al llamar', error);
-          setErrorMessage("Error al conectarse al servidor.");
-        }
-    };
-
     const handleClick = (event) => {
         setIsClosed(true);
+        setIdCuenta('1')
     };
 
         
@@ -124,7 +97,6 @@ function Cuenta({idmesa, setIsSelected, setIsClosed}){
 
 function FacturaPago({idcuenta, setIsSelected}){
 
-    const[generateFactura, setGenerateFactura] = useState(false)
 
     let iconStyles = { color: "black", fontSize: "6em" };
 
@@ -158,6 +130,13 @@ function FacturaPago({idcuenta, setIsSelected}){
         setValorPorcentaje(event.target.value);
     };
 
+    const[generateFactura, setGenerateFactura] = useState(false)
+
+    const do_factura = async () => {    
+      setGenerateFactura(true);
+    };
+    
+
     return(
         <>
             <div className='sectionpago'>
@@ -166,7 +145,7 @@ function FacturaPago({idcuenta, setIsSelected}){
                     <input className='infocliente' type="text" id="name" value={valorName} onChange={handleChangeName} placeholder="Nombre" required />
                     <input className='infocliente' type="text" id="address" value={valorAddress} onChange={handleChangeAdress} placeholder="Direccion" required />
                     <input className='infocliente' type="number" id="nit" value={valorNIT} onChange={handleChangeNIT} placeholder="NIT" required />
-                    <button className='infocliente' onClick={() => setGenerateFactura(true)}> Aceptar </button>
+                    <button className='infocliente' onClick={do_factura}> Aceptar </button>
                 </div>
                 <h2 className='pago'>Pago</h2>
                 <div className='sectiontipopago'>
@@ -182,28 +161,41 @@ function FacturaPago({idcuenta, setIsSelected}){
             </div>
 
             <div className='sectionfactura'>
-                <div className='factura'>
-                    {!generateFactura && <div class = 'logofac'>
-                    <FaIcons.MdOutlineFoodBank style={iconStyles}></FaIcons.MdOutlineFoodBank>
-                    <div class = 'restitlefac'> El Fogon Dorado </div>
-                    </div>}
-                    {generateFactura && <> </>}
-                </div>
-                <button className='end' onClick={() => setIsSelected(false)}> Terminar Transaccion</button>
-            </div> 
+              <div className='factura'>
+                  {!generateFactura && (
+                      <div class='logofac'>
+                          <FaIcons.MdOutlineFoodBank style={iconStyles}></FaIcons.MdOutlineFoodBank>
+                          <div class='restitlefac'> El Fogon Dorado </div>
+                      </div>
+                  )}
+                  {generateFactura && (
+                      <>
+                          <div className='sectiontipopago1'>
+                              <p>Nombre: {valorName}</p>
+                              <p>Dirección: {valorAddress}</p>
+                              <p>NIT: {valorNIT}</p>
+                          </div>
+
+                          {/* CADA LO DE PEDIDO  */}
+                      </>
+                  )}
+              </div>
+              <button className='end' onClick={() => setIsSelected(false)}> Terminar Transacción</button>
+          </div>
+
         </>
     )
 }
 
 function TransaccionScreen({idmesa, setIsSelected}){
 
-    const [isClosed, setIsClosed] = useState(false)
-    const idcuenta = 1;
+    const [isClosed, setIsClosed] = useState(false);
+    const [idcuenta, setIdCuenta] = useState('0'); //EN LA BASE DE DATOS EL ID ESTA EN INT
 
     return(
         <>
             <div class='cardboxcuenta'>
-                {!isClosed && <Cuenta idmesa={idmesa} setIsSelected={setIsSelected} setIsClosed={setIsClosed}></Cuenta>}
+                {!isClosed && <Cuenta idmesa={idmesa} setIsSelected={setIsSelected} setIsClosed={setIsClosed} setIdCuenta={setIdCuenta}></Cuenta>}
                 {isClosed && <FacturaPago idcuenta={idcuenta} setIsSelected={setIsSelected}></FacturaPago>}
             </div>
         </>
