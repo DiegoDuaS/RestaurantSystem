@@ -411,7 +411,6 @@ function FacturaPago({setIsClosed}){
           if (response.ok) {
             const data = await response.json();
             console.log("Se envio correctamente el pago")
-            localStorage.setItem('idfactura', data[0].id_factura);
           } else if (response.status === 401) {
             setErrorMessage("No se pudo llamar al pago");
           } else {
