@@ -46,6 +46,20 @@ h2.pago{
     justify-content: space-evenly; 
 }
 
+.sectiontipopago1{
+    width: 200px;
+    height: 200px;
+    background-color: #B0BEC5;
+    color: black;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: auto;
+    justify-content: space-evenly; 
+}
+
 input.infocliente{
     width: 350px;
     height: 30px;
