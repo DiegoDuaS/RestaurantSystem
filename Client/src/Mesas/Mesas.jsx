@@ -38,13 +38,6 @@ function Mesas({ setIsSelected, mesaIdSelected, onSelectMesa }) {
 
     const handleSubmitMesas = async () => { 
       try {
-
-        if (!areasData || !areasData[areaselected]) {
-          console.error('No hay áreas seleccionadas o el área seleccionada no existe');
-          return;
-        }
-
-        console.log(areaselected)
         const response = await fetch('http://127.0.0.1:3002/mesas', {
           method: 'POST',
           headers: {
@@ -58,6 +51,7 @@ function Mesas({ setIsSelected, mesaIdSelected, onSelectMesa }) {
         if (response.ok) {
           const data = await response.json();
           setMesasData(data);
+          console.log("Selected Area:", areaselected);
         } else if (response.status === 401) {
           setErrorMessage("No se pudo llamar a las mesas");
         } else {
@@ -73,7 +67,7 @@ function Mesas({ setIsSelected, mesaIdSelected, onSelectMesa }) {
     <>
       <div class='cardbox'>
         <header class='headerbox'>
-          Mesas\
+          Mesas
         </header>
         <Areas areasData={areasData} AreaSelected={areaselected} setAreaSelected={setAreaSelected} handleSubmitMesas={handleSubmitMesas}></Areas>
         <ul class='mesacontainer'>

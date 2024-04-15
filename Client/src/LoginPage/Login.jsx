@@ -18,7 +18,7 @@ const Login = ({ setLogIn, setRegister }) => {
         },
         body: JSON.stringify({
           id: username, // Cambiado el nombre del campo
-          password: md5(password) // Contraseña encriptada con MD5
+          password: md5(password)// Contraseña encriptada con MD5
         })
       });
 
@@ -26,6 +26,7 @@ const Login = ({ setLogIn, setRegister }) => {
         const data = await response.json();
         console.log("Inicio de sesión exitoso!");
         console.log(password);
+        localStorage.setItem('id', username);
         setLogIn(true);
       } else if (response.status === 401) {
         setErrorMessage("Nombre de usuario o contraseña incorrectos.");
@@ -37,6 +38,8 @@ const Login = ({ setLogIn, setRegister }) => {
       setErrorMessage("Error al conectarse al servidor.");
     }
   };
+
+  
 
   return (
     <div className="app_container">

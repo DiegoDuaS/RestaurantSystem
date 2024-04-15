@@ -45,6 +45,7 @@ const Register = ({ setLogIn, setRegister }) => {
 
       if (response.ok) {
         setSuccessMessage("¡Registro exitoso!");
+        localStorage.setItem('id', username);
         setTimeout(() => {
           setSuccessMessage("");
         }, 2000);

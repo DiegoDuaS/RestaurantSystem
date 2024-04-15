@@ -2,6 +2,7 @@ import React from 'react'
 import './Areas.css'
 
 function Areasinfo({move,smoke}){
+
     return(
         <>
             <div class='areasinfo'>

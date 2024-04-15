@@ -13,10 +13,12 @@ import React, { useState } from 'react';
 function Main(){
   const [selectedOption, setSelectedOption] = useState('restaurante');
 
+  const userId = localStorage.getItem('id');
+
   return (
     <>
       <main class='main-content'>
-        <HeaderMain></HeaderMain>
+        <HeaderMain id={userId}></HeaderMain>
         {selectedOption === 'restaurante' && <Restaurante />}
         {selectedOption === 'cocina' && <Cocina />}
         {selectedOption === 'bar' && <Bar />}
