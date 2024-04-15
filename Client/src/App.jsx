@@ -38,8 +38,8 @@ const [register, setregister] = useState(false)
 
 return (
   <>
-   {!register && <Login  setLogIn={setLogIn} setregister={setregister}> </Login>}
-   {register && <Register setLogIn={setLogIn}> </Register>}
+   {!register && <Login  setLogIn={setLogIn} setRegister={setregister}> </Login>}
+   {register && <Register setLogIn={setLogIn} setRegister={setregister}> </Register>}
   </>
 )
 

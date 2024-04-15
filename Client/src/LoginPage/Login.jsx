@@ -52,14 +52,15 @@ const Login = ({ setLogIn, setRegister }) => {
         <span className="sub_titulo"></span>
         <form onSubmit={handleSubmit}>
           <input
+            className="login"
             type="text"
             placeholder="ID"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <div className="second">
-            <input type="text" placeholder="Tipo Usuario" />
             <input
+              className="login"
               type="password"
               placeholder="Contraseña"
               value={password}
@@ -69,7 +70,7 @@ const Login = ({ setLogIn, setRegister }) => {
           <button type="submit">Acceder</button>
         </form>
         {errorMessage && <p>{errorMessage}</p>}
-        <p onClick={() => setregister(true)}>Todavía no tienes cuenta? Registrar</p>
+        <p onClick={() => setRegister(true)}>Todavía no tienes cuenta? Registrar</p>
       </div>
     </div>
   );

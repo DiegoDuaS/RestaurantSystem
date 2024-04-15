@@ -65,6 +65,7 @@ body{
   flex-direction: column;
   gap: 20px;
   background-color: #546E7A;
+  width: 300px;
 }
 
 .register-container form .second{
@@ -73,6 +74,7 @@ body{
   gap: 60px;
   align-self: center;
   background-color: #546E7A;
+  width: 100%;
 
 }
 
@@ -118,6 +120,9 @@ body{
 
 }
  
+input.login{
+  width: 100%;
+}
 
 
 
