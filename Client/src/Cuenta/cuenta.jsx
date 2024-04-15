@@ -7,15 +7,17 @@ import './factura.css'
 import * as IoIcons from "react-icons/io"
 import * as FaIcons from "react-icons/md"
 
-function Cuenta({idmesa, setIsSelected, setIsClosed, setIdCuenta}){
+function Cuenta({idmesa, setIsSelected, setIsClosed}){
 
     const [comidaData, setcomidaData] = useState(null);
     const [bebidaData, setbebidaData] = useState(null);
-    const [localCuenta, setLocalCuenta] = useState({ pedido: 0, comida: null, bebida: null, cantidad: 0 });
+    const [pedidoData, setpedidoData] = useState(null);
+
 
     useEffect(() => {
         handleSubmitComida();
         handleSubmitBebida();
+        handleSubmitCuenta();
     }, []);
 
     const handleSubmitComida = async () => {
@@ -58,6 +60,33 @@ function Cuenta({idmesa, setIsSelected, setIsClosed, setIdCuenta}){
         }
     };
 
+    const handleSubmitCuenta = async () => { 
+        try {
+          const response = await fetch('http://127.0.0.1:3002/cuenta', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              pedido: 2
+            })
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            setpedidoData(data);
+            console.log(data);
+          } else if (response.status === 401) {
+            setErrorMessage("No se pudo llamar a las mesas");
+          } else {
+            setErrorMessage("Error interno del servidor.");
+          }
+        } catch (error) {
+          console.error('Error al llamar las mesas', error);
+          setErrorMessage("Error al conectarse al servidor.");
+        }
+      };
+
     const handleClick = (event) => {
         setIsClosed(true);
         setIdCuenta('1')
@@ -85,6 +114,9 @@ function Cuenta({idmesa, setIsSelected, setIsClosed, setIdCuenta}){
                         Cuenta de Mesa #{idmesa}
                     </h2>
                     <div className='cuentabox'>
+                        {pedidoData && pedidoData.map((plato, index) => (
+                            <p class = 'infromacioncomestible' key = {index}>{plato.productonombre} - {plato.cantidad} </p>
+                        ))}
                     </div>
                     <button className = 'cuenta'> Mandar A Cocina</button>
                     <button className = 'cuenta' onClick = {() => handleClick()}> Cerrar Cuenta</button>
@@ -190,12 +222,12 @@ function FacturaPago({idcuenta, setIsSelected}){
 function TransaccionScreen({idmesa, setIsSelected}){
 
     const [isClosed, setIsClosed] = useState(false);
-    const [idcuenta, setIdCuenta] = useState('0'); //EN LA BASE DE DATOS EL ID ESTA EN INT
+    const idcuenta = 1; 
 
     return(
         <>
             <div class='cardboxcuenta'>
-                {!isClosed && <Cuenta idmesa={idmesa} setIsSelected={setIsSelected} setIsClosed={setIsClosed} setIdCuenta={setIdCuenta}></Cuenta>}
+                {!isClosed && <Cuenta idmesa={idmesa} setIsSelected={setIsSelected} setIsClosed={setIsClosed}></Cuenta>}
                 {isClosed && <FacturaPago idcuenta={idcuenta} setIsSelected={setIsSelected}></FacturaPago>}
             </div>
         </>
