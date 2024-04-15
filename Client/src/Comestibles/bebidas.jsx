@@ -3,8 +3,33 @@ import './consumibles.css';
 
 function Card({ meal }) {
   const [isPrepared, setIsPrepared] = useState(false);
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     setIsPrepared((prevIsPrepared) => !prevIsPrepared);
+    const id_prep = meal.id_preparacion;
+
+    try {
+        const response = await fetch('http://127.0.0.1:3002/bar/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: id_prep }),
+        });
+
+        if (!response.ok) {
+            console.error(`Respuesta del servidor: ${response.status} ${response.statusText}`);
+            throw new Error('Error en la respuesta del servidor');
+        }
+
+        const data = await response.json();
+        console.log('Respuesta del servidor:', data);
+
+        // Realiza acciones adicionales con los datos de la respuesta si es necesario
+
+    } catch (error) {
+        console.error('Error al realizar la solicitud POST:', error);
+        // Maneja el error, por ejemplo, mostrando un mensaje al usuario
+    }
   };
   const cardClass = `card ${isPrepared ? 'prepared' : ''}`;
 

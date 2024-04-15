@@ -14,16 +14,7 @@ app.use(cors());
 
 const PORT = process.env.PORT || 3002;
 
-app.get('/', async (req, res) => {
-    try {
-      const result = await db.query('SELECT * FROM empleado');
-      res.json(result.rows);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Internal Server Error');
-    }
-});
-
+// INGRESO DE USUARIOS
 app.post('/login', async (req, res) => {
   const { id, password } = req.body; // Suponiendo que usas JSON como entrada
 
@@ -65,6 +56,7 @@ app.post('/register', async (req, res) => {
   }
 });
 
+// INGRESO DE PEDIDOS POR ÁREA Y MESA
 app.get('/areas', async (req, res) => {
   try {
     const result = await areas();
@@ -96,6 +88,7 @@ app.post('/mesas', async (req, res) => {
   }
 });
 
+// MOSTRAR MENÚ
 app.get('/comida', async (req, res) => {
   try {
     const result = await comida();
@@ -116,6 +109,7 @@ app.get('/bebidas', async (req, res) => {
   }
 });
 
+// PILA DE PREPARACIONES
 app.get('/cocina', async (req, res) => {
   try {
     const result = await cocina();
@@ -137,14 +131,14 @@ app.get('/bar', async (req, res) => {
 });
 
 app.post('/cocina/update', async (req, res) => {
-  const { comida, pedido } = req.body; // Suponiendo que usas JSON como entrada
+  const { id } = req.body; // Suponiendo que usas JSON como entrada
 
-  if (!comida || !pedido) {
-    return res.status(400).json({ error: 'el nombre de la comida es requerido' });
+  if (!id) {
+    return res.status(400).json({ error: 'el id de la preparación es requerido' });
   }
 
   try {
-    const result = await cocina_update(comida, pedido);
+    const result = await cocina_update(id);
     return res.json(result);
   } catch (err) {
     console.error('Error en /cocina/update:', err);
@@ -153,14 +147,14 @@ app.post('/cocina/update', async (req, res) => {
 });
 
 app.post('/bar/update', async (req, res) => {
-  const { bebida, pedido } = req.body; // Suponiendo que usas JSON como entrada
+  const { id } = req.body; // Suponiendo que usas JSON como entrada
 
-  if (!bebida || !pedido) {
-    return res.status(400).json({ error: 'el nombre de la bebida es requerido' });
+  if (!id) {
+    return res.status(400).json({ error: 'el id de la preparación es requerido' });
   }
 
   try {
-    const result = await bar_update(bebida, pedido);
+    const result = await bar_update(id);
     return res.json(result);
   } catch (err) {
     console.error('Error en /bar/update:', err);
@@ -168,6 +162,7 @@ app.post('/bar/update', async (req, res) => {
   }
 });
 
+// ESTADÍSTICAS
 app.get('/stats/eficiencia_meseros1', async (req, res) => {
   try {
     const result = await eficiencia_meseros(); // Llamada a tu función existente
@@ -177,7 +172,6 @@ app.get('/stats/eficiencia_meseros1', async (req, res) => {
     res.status(500).send('Error interno del servidor');
   }
 });
-
 
 app.post('/stats/quejas_platos', async (req, res) => {
   const { fecha_inicial, fecha_final } = req.body;
@@ -210,7 +204,6 @@ app.post('/stats/horarios_pedidos', async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
-
 
 app.post('/stats/platos_mas_pedidos', async (req, res) => {
   const { fecha_inicial, fecha_final } = req.body;
@@ -261,7 +254,7 @@ app.post('/stats/quejas_empleados', async (req, res) => {
   }
 });
 
-
+// CREACIÓN Y EDICIÓN DE PEDIDOS
 app.post('/pedidos', async (req, res) => {
   const { idPedido } = req.body;
 

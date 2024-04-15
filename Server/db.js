@@ -1,5 +1,6 @@
 const pool = require('./conn.js');
 
+// INGRESO DE USUARIOS
 async function login(id, password_md5) {
     try {
         const { rows } = await pool.query('SELECT * FROM Empleado WHERE id_empleado = $1 AND contraseña = $2', [id, password_md5]);
@@ -30,6 +31,7 @@ async function register(name, trabajo, password, area) {
     }
 }
 
+// INGRESO DE PEDIDOS POR ÁREA Y MESA
 async function areas() {
     try {
         // Ejecuta la consulta SQL para obtener todos los registros de la tabla 'area'
@@ -56,6 +58,7 @@ async function mesas(area) {
     }
 }
 
+// MOSTRAR MENÚ
 async function comida() {
     try {
         const { rows } = await pool.query('SELECT * FROM comida');
@@ -76,9 +79,10 @@ async function bebida() {
     }
 }
 
+// PILA DE PREPARACIONES
 async function cocina() {
     try {
-        const { rows } = await pool.query('SELECT c.nombre as comida, cantidad, pedido, hora, estado FROM comida_cocina k JOIN comida c ON k.comida = c.id_comida ORDER BY hora');
+        const { rows } = await pool.query('SELECT c.nombre as comida, cantidad, pedido, hora, estado, id_preparacion FROM comida_cocina k JOIN comida c ON k.comida = c.id_comida ORDER BY id_preparacion');
         return rows;
     } catch (error) {
         console.error('Error en la consulta SQL:', error);
@@ -88,7 +92,7 @@ async function cocina() {
 
 async function bar() {
     try {
-        const { rows } = await pool.query('SELECT b.nombre as bebida, cantidad, pedido, hora, estado FROM bebidas_bar k JOIN bebida b ON k.bebida = b.id_bebida ORDER BY hora');
+        const { rows } = await pool.query('SELECT b.nombre as bebida, cantidad, pedido, hora, estado, id_preparacion FROM bebidas_bar k JOIN bebida b ON k.bebida = b.id_bebida ORDER BY id_preparacion');
         return rows;
     } catch (error) {
         console.error('Error en la consulta SQL:', error);
@@ -96,9 +100,9 @@ async function bar() {
     }
 }
 
-async function cocina_update(comida, pedido) {
+async function cocina_update(id) {
     try {
-        const { rows } = await pool.query('UPDATE comida_cocina SET estado = true WHERE comida = (Select id_comida from comida where nombre = $1 AND pedido = $2)', [comida, pedido]);
+        const { rows } = await pool.query('UPDATE comida_cocina SET estado = true WHERE id_preparacion = $1', [id]);
         return rows;
     } catch (error) {
         console.error('Error en la consulta SQL:', error);
@@ -106,9 +110,9 @@ async function cocina_update(comida, pedido) {
     }
 }
 
-async function bar_update(bebida, pedido) {
+async function bar_update(id) {
     try {
-        const { rows } = await pool.query('UPDATE bebidas_bar SET estado = true WHERE bebida = (Select id_bebida from bebida where nombre = $1 AND pedido = $2)', [bebida, pedido]);
+        const { rows } = await pool.query('UPDATE bebidas_bar SET estado = true WHERE id_preparacion =  $1', [id]);
         return rows;
     } catch (error) {
         console.error('Error en la consulta SQL:', error);
