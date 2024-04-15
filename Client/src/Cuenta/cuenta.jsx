@@ -564,7 +564,6 @@ function EncuestaQuejas({setIsSelected}){
         if (response.ok) {
           const data = await response.json();
            // Limpiar los datos después de enviar la queja
-            setValorIdcliente('');
             setValorEmpleado('');
             setValorComida('');
             setValorBebida('');
@@ -603,8 +602,6 @@ function EncuestaQuejas({setIsSelected}){
         if (response.ok) {
           const data = await response.json();
            // Limpiar los datos después de enviar la queja
-           setValorIdcliente('');
-           setValorEmpleado('');
            setValorAmabilidad('');
            setValorExactitud('');
            setSelectedOption('');
