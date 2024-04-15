@@ -187,6 +187,31 @@ async function imprimir_pedido(id_pedido) {
     }
 }
 
+async function crear_pedido(id_mesa, propina, empleado, estado) {
+    try {
+        const query = 'INSERT INTO Pedido (mesa, propina, empleado, estado) VALUES ($1, $2, $3, $4)';
+        await pool.query(query, [id_mesa, propina, empleado, estado]);
+  
+        const { rows } = await pool.query('SELECT * FROM Pedido WHERE mesa = $1 AND estado = true', [id_mesa]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+  }
+
+  async function ingresar_pedido(pedido, bebida, comida, cantidad) {
+    try {
+        const query = 'INSERT INTO Recuento (pedido, bebida, comida, cantidad) VALUES ($1, $2, $3, $4)';
+        await pool.query(query, [pedido, bebida, comida, cantidad]);
+  
+        const { rows } = await pool.query('SELECT * FROM Recuento WHERE pedido = $1', [pedido]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+  }
 
 module.exports = {
     login,
@@ -205,6 +230,7 @@ module.exports = {
     horarios_pedidos,
     platos_mas_pedidos,
     promedio_comidas,
-    quejas_empleados
-
+    quejas_empleados,
+    crear_pedido,
+    ingresar_pedido
 };

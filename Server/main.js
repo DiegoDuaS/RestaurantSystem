@@ -1,7 +1,8 @@
 const db = require('./conn.js');
 const { login, register, areas, mesas, comida, bebida, cocina, bar,
   cocina_update, bar_update, eficiencia_meseros,  quejas_platos,
-imprimir_pedido, horarios_pedidos, platos_mas_pedidos, quejas_empleados,promedio_comidas} = require('./db.js');
+imprimir_pedido, horarios_pedidos, platos_mas_pedidos, quejas_empleados,promedio_comidas,
+crear_pedido, ingresar_pedido} = require('./db.js');
 
 const express = require('express');
 const app = express();
@@ -276,6 +277,47 @@ app.post('/pedidos', async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
+
+app.post('/pedidos/crear', async (req, res) => {
+  const { idMesa, propina, empleado, estado } = req.body;
+
+  if (!idMesa || !propina || !empleado || !estado) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+      const pedido = await crear_pedido(idMesa, propina, empleado, estado);
+      if (pedido) {
+          return res.json(pedido);
+      } else {
+          return res.status(400).json({ error: 'No se pudo registrar al usuario' });
+      }
+  } catch (err) {
+      console.error('Error en /register:', err);
+      res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+app.post('/pedidos/ingresar', async (req, res) => {
+  const { pedido, id_bebida, id_comida, cantidad } = req.body;
+
+  if (!pedido || !cantidad) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+      const result = await ingresar_pedido(pedido, id_bebida, id_comida, cantidad);
+      if (result) {
+          return res.json(result);
+      } else {
+          return res.status(400).json({ error: 'No se pudo registrar al usuario' });
+      }
+  } catch (err) {
+      console.error('Error en /register:', err);
+      res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
 
 app.listen(PORT, '127.0.0.1', () => {
     console.log(`Server listening at http://127.0.0.1:${PORT}`)
