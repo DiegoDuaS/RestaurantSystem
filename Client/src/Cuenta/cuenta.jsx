@@ -241,7 +241,6 @@ function FacturaPago({setIsClosed}){
     const [cuentaData, setcuentaData] = useState(null);
     const [pedidoData, setpedidoData] = useState(null);
     const [clienteData, setclienteData] = useState(null);
-    const [totalData, settotalData] = useState(0);
 
     let iconStyles = { color: "black", fontSize: "6em" };
 
@@ -394,6 +393,35 @@ function FacturaPago({setIsClosed}){
           setErrorMessage("Error al conectarse al servidor.");
         }
       };
+
+      const handleSubmitPago = async (tipo, fraccion) => { 
+        try {
+          const response = await fetch('http://127.0.0.1:3002/pago', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              factura: localStorage.getItem('idfactura'),
+              tipo: tipo,
+              fraccion: fraccion
+            })
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            console.log("Se envio correctamente el pago")
+            localStorage.setItem('idfactura', data[0].id_factura);
+          } else if (response.status === 401) {
+            setErrorMessage("No se pudo llamar al pago");
+          } else {
+            setErrorMessage("Error interno del servidor.");
+          }
+        } catch (error) {
+          console.error('Error al llamar el pago', error);
+          setErrorMessage("Error al conectarse al servidor.");
+        }
+      };
     
 
     return(
@@ -414,7 +442,7 @@ function FacturaPago({setIsClosed}){
                             <option value="Efectivo">Efectivo</option>
                         </select>
                         <input className='infocliente' type="number" id="porcentaje" value={valorPorcentaje} onChange={handleChangePorcentaje} placeholder="Porcentaje a pagar" required />
-                        <button className='infocliente' onClick={() => handlePago()}> Pagar </button>
+                        <button className='infocliente' onClick={() => handleSubmitPago(selectedOption, valorPorcentaje)}> Pagar </button>
                 </div>
             </div>
 
