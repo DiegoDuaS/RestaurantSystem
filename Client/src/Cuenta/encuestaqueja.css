@@ -1,0 +1,104 @@
+.headerboxencuesta {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: #37474F;
+    height: 100px;
+    width: 100%;
+    color: #ffff;
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    text-align: center;
+}
+
+.pcuenta{
+    margin: 0;
+}
+
+.hcuenta{
+    margin: 0;
+}
+
+.sectionencuesta{
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    justify-content: space-around; 
+    text-align: center;
+    height: 100%;
+    width: 100%;
+}
+
+.sectionencuestaqueja{
+    display: flex; 
+    flex-direction: row;
+    align-items: center; 
+    justify-content: space-evenly; 
+    text-align: center;
+    height: 100%;
+    width: 100%;
+}
+
+.sectionbuton{
+    display: flex; 
+    flex-direction: row;
+    align-items: start; 
+    justify-content: space-evenly; 
+    text-align: center;
+    height: 70px;
+    width: 100%;
+}
+
+.encuestaqueja{
+    width: 500px;
+    height: 400px;
+    background-color: #B0BEC5;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: center; 
+    padding: 0;
+    margin: 0;
+}
+
+.encuestabuton{
+    width: 130px;
+    height: 40px;
+    color: white;
+    background-color: #37474F;
+}
+
+.encuesta2 {
+    color: black;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.encuesta3 {
+    color: black;
+    margin: 0;
+    font-weight: normal;
+}
+
+.sectionbuton1{
+    display: flex; 
+    flex-direction: row;
+    align-items: center; 
+    justify-content: space-evenly; 
+    text-align: center;
+    height: 70px;
+    width: 100%;
+}
+
+input.infoqueja{
+    width: 350px;
+    height: 60px;
+    border-radius: 5px;
+    background-color: white;
+    border-color: #37474F;
+    color: #37474F;
+    border: 1px solid black;
+}
+
