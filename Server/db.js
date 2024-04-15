@@ -96,6 +96,26 @@ async function bar() {
     }
 }
 
+async function cocina_update(comida, pedido) {
+    try {
+        const { rows } = await pool.query('UPDATE comida_cocina SET estado = true WHERE comida = (Select id_comida from comida where nombre = $1 AND pedido = $2)', [comida, pedido]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
+async function bar_update(bebida, pedido) {
+    try {
+        const { rows } = await pool.query('UPDATE bebidas_bar SET estado = true WHERE bebida = (Select id_bebida from bebida where nombre = $1 AND pedido = $2)', [bebida, pedido]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
 module.exports = {
     login,
     register,
@@ -104,5 +124,7 @@ module.exports = {
     comida,
     bebida,
     cocina,
-    bar
+    bar,
+    cocina_update,
+    bar_update
 };

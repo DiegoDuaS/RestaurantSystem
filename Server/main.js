@@ -1,5 +1,6 @@
 const db = require('./conn.js');
-const { login, register, areas, mesas, comida, bebida, cocina, bar } = require('./db.js');
+const { login, register, areas, mesas, comida, bebida, cocina, bar,
+  cocina_update, bar_update} = require('./db.js');
 
 const express = require('express');
 const app = express();
@@ -133,6 +134,37 @@ app.get('/bar', async (req, res) => {
   }
 });
 
+app.post('/cocina/update', async (req, res) => {
+  const { comida, pedido } = req.body; // Suponiendo que usas JSON como entrada
+
+  if (!comida || !pedido) {
+    return res.status(400).json({ error: 'el nombre de la comida es requerido' });
+  }
+
+  try {
+    const result = await cocina_update(comida, pedido);
+    return res.json(result);
+  } catch (err) {
+    console.error('Error en /cocina/update:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+app.post('/bar/update', async (req, res) => {
+  const { bebida, pedido } = req.body; // Suponiendo que usas JSON como entrada
+
+  if (!bebida || !pedido) {
+    return res.status(400).json({ error: 'el nombre de la bebida es requerido' });
+  }
+
+  try {
+    const result = await bar_update(bebida, pedido);
+    return res.json(result);
+  } catch (err) {
+    console.error('Error en /bar/update:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
 
 app.listen(PORT, '127.0.0.1', () => {
     console.log(`Server listening at http://127.0.0.1:${PORT}`)
