@@ -11,8 +11,6 @@ function Estadisticas() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleCreate = async () => {
-    console.log(startDate)
-    console.log(endDate)
     try {
       if (selectedOption === 'quejasPlatos') {
          // Suponiendo que `startDate` y `endDate` son las fechas seleccionadas por el usuario
@@ -146,27 +144,35 @@ function Estadisticas() {
 
         // Recorre todas las claves en el objeto `data`
         for (let key in data) {
+          
             if (data[key] === null) {
               continue; // Si el valor es `null`, salta a la siguiente clave
             }
             if (key === 'hora') {
               // Si la clave es 'hora', formatea el valor según su estructura
               const horaData = data[key];
-              
-              // Puedes ajustar el formato de hora según tus necesidades
-              if (horaData && horaData.hours !== undefined) {
-                  formattedData.push(`${key}: ${horaData.hours}`);
-              } else {
-                  // Manejo por si 'hora' no contiene el campo esperado
-                  formattedData.push(`${key}: datos de hora no disponibles`);
+              if (typeof horaData === 'string') {
+                formattedData.push(`\n${key}: ${horaData}`);
+              }
+              else{
+                // Puedes ajustar el formato de hora según tus necesidades
+                if (horaData && horaData.hours !== undefined) {
+                    formattedData.push(`${key}: ${horaData.hours}`);
+                } else {
+                    // Manejo por si 'hora' no contiene el campo esperado
+                    formattedData.push(`${key}: datos de hora no disponibles`);
+                }
               }
           } else if (key === 'promedio') {
             // Si la clave es 'promedio', formatea el valor según su estructura
             const promedioData = data[key];
+            console.log(promedioData)
             if (promedioData && promedioData.hours !== undefined && promedioData.minutes !== undefined) {
                 formattedData.push(`promedio: ${promedioData.hours} horas y ${promedioData.minutes} minutos`);
             } else {
-                formattedData.push('promedio: datos de promedio no disponibles');
+                if (promedioData && promedioData.minutes !== undefined) {
+                  formattedData.push(`promedio: ${promedioData.minutes} minutos`);
+                } else {formattedData.push('promedio: datos de promedio no disponibles');}
             }
           } else if (key === 'trabajo') {
             formattedData.push(`\n${key}: ${data[key]}`);

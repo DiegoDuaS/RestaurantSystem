@@ -11,6 +11,10 @@ import * as FaIcons from "react-icons/md"
 function Cuenta({idmesa, setIsClosed}){
 
     const idcuenta = localStorage.getItem('idcuenta');
+    const idcliente = localStorage.getItem('idcliente');
+    const id_empleado = localStorage.getItem('id');
+
+
 
     const [comidaData, setcomidaData] = useState(null);
     const [bebidaData, setbebidaData] = useState(null);
@@ -23,7 +27,7 @@ function Cuenta({idmesa, setIsClosed}){
       handleSubmitComida();
       handleSubmitBebida();
       handleSubmitCuenta();
-  }, [idcuenta]);
+  }, [idcuenta,idcliente,id_empleado]);
 
   useEffect(() => {
     limpiarPedidoData();
@@ -502,7 +506,7 @@ function EncuestaQuejas({setIsSelected}){
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            cliente: 1, 
+            cliente: idcliente, 
             empleado:empleado, 
             comida: comida, 
             bebida: bebida, 
@@ -514,6 +518,7 @@ function EncuestaQuejas({setIsSelected}){
         if (response.ok) {
           const data = await response.json();
            // Limpiar los datos después de enviar la queja
+            setValorCliente('');
             setValorEmpleado('');
             setValorComida('');
             setValorBebida('');
@@ -531,6 +536,44 @@ function EncuestaQuejas({setIsSelected}){
       }
     };
   
+
+    const handleSubmit_enceusta = async (e) => {
+      let empleado = valorEmpleado;
+      if (valorEmpleado === '') {
+        empleado = null;
+      }
+      e.preventDefault();
+      try {
+        const response = await fetch('http://127.0.0.1:3002/encuesta', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            cliente: idcliente, 
+            empleado: id_empleado, 
+            amabilidad: valorAmabilidad, //valorEmpleado 
+            exactitud: valorAmabilidad //valorEmpleado
+          })
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+           // Limpiar los datos después de enviar la queja
+           setValorCliente('');
+           setValorEmpleado('');
+           setValorAmabilidad('');
+           setValorExactitud('');
+        } else if (response.status === 401) {
+          setErrorMessage("Nombre de usuario o contraseña incorrectos.");
+        } else {
+          setErrorMessage("Error interno del servidor.");
+        }
+      } catch (error) {
+        console.error('Error al iniciar sesión:', error);
+        setErrorMessage("Error al conectarse al servidor.");
+      }
+    };
 
     return(
       <>
@@ -552,7 +595,7 @@ function EncuestaQuejas({setIsSelected}){
             <p> Amabilidad </p>
             <input className='infocliente' type="number" id="amabilidad" value={valorAmabilidad} onChange={handleChangeAmabilidad} placeholder="Que tan amable fue su mesero" required />
             <div className='sectionbuton1'>
-              <button className='encuestabuton'>Enviar</button>
+              <button className='encuestabuton' onClick={handleSubmit_enceusta}>Enviar</button>
             </div>
           </div>
           <div className='encuestaqueja'> 
