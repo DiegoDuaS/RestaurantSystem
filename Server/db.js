@@ -302,7 +302,30 @@ async function cuenta_update(id) {
     }
 }
 
+// FACTURA
+async function save_factura(cliente, pedido) {
+    try {
+        await pool.query('INSERT INTO factura (cliente, pedido) VALUES ($1, $2);', [cliente, pedido]);
 
+        const { rows } = await pool.query('SELECT * FROM factura WHERE pedido = $1;', [pedido]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
+
+async function save_pago(factura, tipo, fraccion) {
+    try {
+        await pool.query('INSERT INTO forma_de_pago (factura, tipo, fraccion) VALUES ($1, $2, $3);', [factura, tipo, fraccion]);
+
+        const { rows } = await pool.query('SELECT * FROM forma_de_pago WHERE factura = $1;', [factura]);
+        return rows;
+    } catch (error) {
+        console.error('Error en la consulta SQL:', error);
+        throw error;
+    }
+}
 
 module.exports = {
     login,
@@ -330,5 +353,7 @@ module.exports = {
     crear_cliente,
     nueva_encuesta,
     nueva_queja,
-    cuenta_update
+    cuenta_update,
+    save_factura,
+    save_pago
 };

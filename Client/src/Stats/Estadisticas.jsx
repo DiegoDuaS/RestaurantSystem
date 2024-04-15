@@ -168,6 +168,8 @@ function Estadisticas() {
             } else {
                 formattedData.push('promedio: datos de promedio no disponibles');
             }
+          } else if (key === 'trabajo') {
+            formattedData.push(`\n${key}: ${data[key]}`);
           } else {
               // Construye la cadena en el formato clave: valor para otras claves
               formattedData.push(`${key}: ${data[key]}`);
@@ -175,7 +177,7 @@ function Estadisticas() {
         }
 
         // Une las cadenas con una coma y un espacio, luego añade un salto de línea al final
-        return formattedData.join(', ') + '\n';
+        return formattedData.join(', ') + '\n\n';
     }).join('');
 }
 

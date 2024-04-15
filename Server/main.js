@@ -3,7 +3,7 @@ const { login, register, areas, mesas, comida, bebida, cocina, bar,
   cocina_update, bar_update, eficiencia_meseros,  quejas_platos,
 imprimir_pedido, horarios_pedidos, platos_mas_pedidos, quejas_empleados,promedio_comidas,
 crear_pedido, ingresar_pedido, cuenta, comida_recuento, bebida_recuento, cuenta_update,
-crear_cliente, nueva_queja, nueva_encuesta} = require('./db.js');
+crear_cliente, nueva_queja, nueva_encuesta, save_factura} = require('./db.js');
 
 const express = require('express');
 const app = express();
@@ -424,7 +424,7 @@ app.post('/encuesta', async (req, res) => {
           return res.status(400).json({ error: 'No se pudo registrar la encuesta' });
       }
   } catch (err) {
-      console.error('Error en /cliente:', err);
+      console.error('Error en /encuesta:', err);
       res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
@@ -444,10 +444,52 @@ app.post('/queja', async (req, res) => {
           return res.status(400).json({ error: 'No se pudo registrar la queja' });
       } }
   catch (err) {
-    console.error('Error en /cliente:', err);
+    console.error('Error en /queja:', err);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
+
+// FACTURA
+app.post('/factura', async (req, res) => {
+  const { cliente, pedido } = req.body;
+
+  if (!cliente || !pedido) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+      const result = await save_factura(cliente, pedido);
+      if (result) {
+          return res.json(result);
+      } else {
+          return res.status(400).json({ error: 'No se pudo registrar la factura' });
+      } }
+  catch (err) {
+    console.error('Error en /factura:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+app.post('/pago', async (req, res) => {
+  const { factura, tipo, fraccion } = req.body;
+
+  if (!factura || !tipo || !fraccion) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+      const result = await save_pago(factura, tipo, fraccion);
+      if (result) {
+          return res.json(result);
+      } else {
+          return res.status(400).json({ error: 'No se pudo registrar el pago' });
+      } }
+  catch (err) {
+    console.error('Error en /pago:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
 
 app.listen(PORT, '127.0.0.1', () => {
     console.log(`Server listening at http://127.0.0.1:${PORT}`)
