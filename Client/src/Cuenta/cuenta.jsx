@@ -227,7 +227,6 @@ function Cuenta({idmesa, setIsSelected, setIsClosed}){
                             <p class = 'infromacioncomestible' key = {index}>{plato.productonombre} - {plato.cantidad} </p>
                         ))}
                     </div>
-                    <button className = 'cuenta'> Mandar A Cocina</button>
                     <button className = 'cuenta' onClick = {() => handleClick()}> Cerrar Cuenta</button>
                     <div className='spaced'></div>
                 </div>
