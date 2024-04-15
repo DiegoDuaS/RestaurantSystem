@@ -133,3 +133,8 @@ button.end{
     font-weight: lighter;
     font-size: 1em;
 }
+
+h2.total{
+    color:black;
+    font-weight: normal;
+}

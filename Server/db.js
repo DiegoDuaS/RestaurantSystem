@@ -179,7 +179,7 @@ async function quejas_empleados(fecha_inicial, fecha_final) {
 
 async function imprimir_pedido(id_pedido) {
     try {
-        const { rows } = await pool.query('select * from recuento where pedido = $1;', [id_pedido]);
+        const { rows } = await pool.query('select * from pedido where id_pedido = $1;', [id_pedido]);
         return rows;
     } catch (error) {
         console.error('Error en la consulta SQL:', error);

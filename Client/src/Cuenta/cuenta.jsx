@@ -68,7 +68,7 @@ function Cuenta({idmesa, setIsSelected, setIsClosed}){
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              pedido: 2
+              pedido: 1
             })
           });
       
@@ -87,10 +87,90 @@ function Cuenta({idmesa, setIsSelected, setIsClosed}){
         }
       };
 
+    const handleSubmitAddComida = async (comidaId, pedidoId) => { 
+        try {
+          const response = await fetch('http://127.0.0.1:3002/recuento/comida', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              comida: comidaId,
+              pedido: pedidoId
+            })
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+          } else if (response.status === 401) {
+            setErrorMessage("No se pudo llamar a las mesas");
+          } else {
+            setErrorMessage("Error interno del servidor.");
+          }
+        } catch (error) {
+          console.error('Error al llamar las mesas', error);
+          setErrorMessage("Error al conectarse al servidor.");
+        }
+    };
+
+    const handleSubmitAddBebida = async (bebidaId, pedidoId) => { 
+        try {
+            const prueba = JSON.stringify({
+                bebida: bebidaId,
+                pedido: pedidoId
+              })
+    
+              console.log(prueba)
+          
+          const response = await fetch('http://127.0.0.1:3002/recuento/bebida', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              bebida: bebidaId,
+              pedido: pedidoId
+            })
+          });
+          
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+          } else if (response.status === 401) {
+            setErrorMessage("No se pudo llamar a las mesas");
+          } else {
+            setErrorMessage("Error interno del servidor.");
+          }
+        } catch (error) {
+          console.error('Error al llamar las mesas', error);
+          setErrorMessage("Error al conectarse al servidor.");
+        }
+    };
+
+
     const handleClick = (event) => {
         setIsClosed(true);
-        setIdCuenta('1')
     };
+
+    const handleClickComida = async (comidaId, pedidoId) => {
+        try {
+            await handleSubmitAddComida(comidaId, pedidoId); 
+            handleSubmitCuenta();
+        } catch (error) {
+            console.error('Error al manejar la comida', error);
+        }
+    };
+
+    const handleClickBebida = async (bebidaId, pedidoId ) => {
+        try {
+            await handleSubmitAddBebida(bebidaId, pedidoId); 
+            handleSubmitCuenta();
+        } catch (error) {
+            console.error('Error al manejar la bebida', error);
+        }
+    };
+
 
         
     return(
@@ -99,13 +179,13 @@ function Cuenta({idmesa, setIsSelected, setIsClosed}){
                     <h3 class = 'tipopedido'>Platillos</h3>
                     <div class = 'platos'>
                         {comidaData && comidaData.map((plato, index) => (
-                            <p class = 'infromacioncomestible' >{plato.nombre} - {plato.descripcion} - ${plato.precio}</p>
+                            <p class = 'infromacioncomestible' onClick={() => handleClickComida(plato.id_comida, 1)}>{plato.nombre} - {plato.descripcion} - ${plato.precio}</p>
                         ))}
                     </div>
                     <h3 class = 'tipopedido'>Bebidas</h3>
                     <div class = 'platos'>
                         {bebidaData && bebidaData.map((plato, index) => (
-                            <p class = 'infromacioncomestible' key = {index}>{plato.nombre} - {plato.descripcion} - ${plato.precio}</p>
+                            <p class = 'infromacioncomestible' onClick={() => handleClickBebida(plato.id_bebida, 1)} key = {index}>{plato.nombre} - {plato.descripcion} - ${plato.precio}</p>
                         ))}
                     </div>
                 </div>
@@ -129,6 +209,8 @@ function Cuenta({idmesa, setIsSelected, setIsClosed}){
 
 function FacturaPago({idcuenta, setIsSelected}){
 
+    const [cuentaData, setcuentaData] = useState(null);
+    const [pedidoData, setpedidoData] = useState(null);
 
     let iconStyles = { color: "black", fontSize: "6em" };
 
@@ -167,6 +249,63 @@ function FacturaPago({idcuenta, setIsSelected}){
     const do_factura = async () => {    
       setGenerateFactura(true);
     };
+
+    const handleSubmitCuenta = async () => { 
+        try {
+          const response = await fetch('http://127.0.0.1:3002/cuenta', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              pedido: 1
+            })
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            setcuentaData(data);
+          } else if (response.status === 401) {
+            setErrorMessage("No se pudo llamar a las mesas");
+          } else {
+            setErrorMessage("Error interno del servidor.");
+          }
+        } catch (error) {
+          console.error('Error al llamar las mesas', error);
+          setErrorMessage("Error al conectarse al servidor.");
+        }
+      };
+
+    useEffect(() => {
+        handleSubmitCuenta();
+        handleSubmitPedido();
+    }, []);
+
+    const handleSubmitPedido = async () => { 
+        try {
+          const response = await fetch('http://127.0.0.1:3002/pedidos', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              idPedido: 1
+            })
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            setpedidoData(data);
+          } else if (response.status === 401) {
+            setErrorMessage("No se pudo llamar a las mesas");
+          } else {
+            setErrorMessage("Error interno del servidor.");
+          }
+        } catch (error) {
+          console.error('Error al llamar las mesas', error);
+          setErrorMessage("Error al conectarse al servidor.");
+        }
+      };
     
 
     return(
@@ -207,8 +346,10 @@ function FacturaPago({idcuenta, setIsSelected}){
                                 <p style={{ margin: 0 }}>Dirección: {valorAddress}</p>
                                 <p style={{ margin: 0 }}>NIT: {valorNIT}</p>
                             </div>
-                            {/* Otros campos y detalles de la factura pueden ir aquí */}
-                            <button className='yourButtonClass'>Tu botón aquí</button>
+                            {cuentaData && cuentaData.map((plato, index) => (
+                            <p class = 'infromacioncomestible' key = {index}>{plato.productonombre} - {plato.cantidad} - ${plato.preciounitario * plato.cantidad} </p>
+                            ))}
+                            <h2 className='total'> Total: ${pedidoData && pedidoData[0].total}</h2>
                         </>
                     )}
               </div>
