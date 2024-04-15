@@ -278,10 +278,6 @@ function FacturaPago({setIsClosed}){
 
     const[generateFactura, setGenerateFactura] = useState(false)
 
-    const do_factura = async () => {    
-      setGenerateFactura(true);
-    };
-
     const handleSubmitCuenta = async () => { 
         try {
           const response = await fetch('http://127.0.0.1:3002/cuenta', {
@@ -385,7 +381,7 @@ function FacturaPago({setIsClosed}){
                     <input className='infocliente' type="text" id="name" value={valorName} onChange={handleChangeName} placeholder="Nombre" required />
                     <input className='infocliente' type="text" id="address" value={valorAddress} onChange={handleChangeAdress} placeholder="Direccion" required />
                     <input className='infocliente' type="number" id="nit" value={valorNIT} onChange={handleChangeNIT} placeholder="NIT" required />
-                    <button className='infocliente' onClick={() => do_factura && handleSubmitCliente(parseInt(valorNIT), valorName, valorAddress)}> Aceptar </button>
+                    <button className='infocliente' onClick={() => setGenerateFactura(true) && handleSubmitCliente(parseInt(valorNIT), valorName, valorAddress)}> Aceptar </button>
                 </div>
                 <h2 className='pago'>Pago</h2>
                 <div className='sectiontipopago'>
