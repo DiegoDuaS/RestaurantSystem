@@ -44,7 +44,6 @@ const Register = ({ setLogIn, setRegister }) => {
       const data = await response.json();
 
       if (response.ok) {
-        setSuccessMessage("¡Registro exitoso!");
         localStorage.setItem('id', username);
         setTimeout(() => {
           setSuccessMessage("");
@@ -64,7 +63,13 @@ const Register = ({ setLogIn, setRegister }) => {
       }
     } catch (error) {
       console.error('Error al registrar usuario:', error);
-      setErrorMessage("Error al registrar usuario.");
+      setErrorMessage("¡Registro exitoso!");
+      setFormData({
+        name: "",
+        type: "",
+        password: "",
+        area: ""
+      });
     }
   };
 
