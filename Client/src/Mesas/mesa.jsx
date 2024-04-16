@@ -38,9 +38,9 @@ function Mesa({ num, available, setIsSelected, mesaIdSelected, setIdMesaSelected
     };
 
     return (
-        <li key={num} className={`cardmesa ${available ? 'disponiblec' : 'no-disponiblec'}`} onClick={handleClick}>
+        <li key={num} className={`cardmesa ${available ? 'no-disponiblec' : 'disponiblec'}`} onClick={handleClick}>
             <h2 className='numesa'>{num}</h2>
-            <div className={`statemesa ${available ? 'disponibles' : 'no-disponibles'}`}>{available ? 'Disponible' : 'No disponible'}</div>
+            <div className={`statemesa ${available ? 'no-disponibles' : 'disponibles'}`}>{available ? 'No Disponible' : 'Disponible'}</div>
         </li>
     );
 }
