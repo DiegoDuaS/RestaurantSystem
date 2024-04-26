@@ -35,6 +35,6 @@ npm install express
 
 Este proyecto fue desarrollado por:
 
-Diego Duarte Slowing
-Maria Jose Villafuerte Arredondo
-Fabiola Alejandra Contreras Colindres
+- Diego Duarte Slowing
+- Maria Jose Villafuerte Arredondo
+- Fabiola Alejandra Contreras Colindres
