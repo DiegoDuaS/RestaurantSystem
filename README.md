@@ -13,15 +13,16 @@ El proyecto implica crear una base de datos para gestionar las operaciones de un
 ## Instalación
 
 1. Clona este repositorio en tu máquina local:
-git clone 
+   
+git clone git@github.com:DiegoDuaS/RestaurantSystem.git 
 
-2.Instala las dependencias del proyecto:
+2. Instala las dependencias del proyecto:
 
 (Estando en la carpeta de Client)
-npm install node
+- npm install node
 
 (Estando en la carpeta de Server)
-npm install express
+- npm install express
 
 ## Ejecución
 
